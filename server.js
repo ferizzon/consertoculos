@@ -14,6 +14,17 @@ const DOMPurify = createDOMPurify(window);
 
 const app = express();
 
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Isto diz ao servidor: "Tudo o que estiver nesta pasta, pode mostrar para quem entrar"
+app.use(express.static(__dirname));
+
+// Isto diz ao servidor: "Quando entrarem na página principal, mostre o index.html"
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 /* ==========================================================================
    1. CAMADAS DE SEGURANÇA GLOBAL (BLINDAGEM CONTRA ATAQUES)
    ========================================================================== */
