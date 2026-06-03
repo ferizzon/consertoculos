@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consertóculos Lab | Engenharia Óptica e Fusão a Laser em Titânio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header id="main-header">
+        <div class="logo-container">
+            <span class="logo-text">Consertóculos</span>
+        </div>
+        <nav class="main-nav" aria-label="Navegação principal">
+            <a href="#section-hero">Início</a>
+            <a href="#section-laser">Solda a Laser</a>
+            <a href="#section-oficina">Serviços</a>
+            <a href="#section-lentes">Lentes e Armações</a>
+            <a href="#section-unidades">Nossas Unidades</a>
+            <a href="#section-contato">Entre em Contato</a>
+        </nav>
+    </header>
+
+    <div id="scrollytelling-container">
+        <canvas id="animation-canvas"></canvas>
+    </div>
+
+    <main id="content-layers">
+        
+        <div id="video-track">
+            
+            <section class="scroll-section" id="section-hero">
+                <div class="content-box-premium">
+                    <span class="badge-gold">Tradição & Inovação • 47 Anos de Mercado</span>
+                    <h1>Sua armação favorita.<br><span class="highlight">Restauração molecular definitiva.</span></h1>
+                    <p>Óculos de grife e peças de alta performance exigem intervenções cirúrgicas. Há quase meio século, a Consertóculos une a expertise da óptica tradicional às tecnologias industriais mais avançadas do mundo. Não somos apenas uma oficina de consertos; somos um laboratório especializado em salvar investimentos ópticos com precisão milimétrica.</p>
+                    <div class="scroll-indicator">Role para iniciar a imersão laboratorial</div>
+                </div>
+            </section>
+
+            <section class="scroll-section" id="section-laser">
+                <div class="content-box-premium right">
+                    <span class="badge-laser">Tecnologia Fiber Laser Activated</span>
+                    <h2>Pioneirismo em Solda a Laser <br><span class="highlight">A Física do Titânio Recriada</span></h2>
+                    <p>O Titânio é um metal de transição nobre, ultraleve e biocompatível. Técnicas tradicionais de solda com calor comum (maçarico) destroem sua estrutura molecular, tornando a peça quebradiça e manchando a pintura criogênica.</p>
+                    <p>Nosso laboratório destaca-se por ser <strong>praticamente o único no Brasil</strong> a dominar a microsolda a laser pulsada em atmosfera controlada. O feixe laser derrete instantaneamente as superfícies fraturadas em nível microscópico, fundindo o titânio sem alterar suas propriedades elásticas originais e sem deixar rebarbas ou marcas de queimado.</p>
+                    
+                    <div class="tech-spec-grid">
+                        <div class="spec-card">
+                            <h3>Focalização Micro</h3>
+                            <p>A precisão do feixe atinge uma área menor que 0.2mm, mantendo a têmpera original do metal intacta.</p>
+                        </div>
+                        <div class="spec-card">
+                            <h3>Fusão Limpa</h3>
+                            <p>Processo metalúrgico de alta tecnologia. Sem parafusos ou rebites extras adicionados na ponte.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="scroll-section" id="section-oficina">
+                <div class="content-box-premium left">
+                    <span class="badge-laser">Manutenção e Engenharia Mecânica</span>
+                    <h2>Oficina de Alta Complexidade<br><span class="highlight">Restauração de Componentes</span></h2>
+                    <p>Nossa bancada técnica atua com instrumentação micrométrica para recondicionar todos os elementos móveis e estáticos que compõem a ergonomia e o centro óptico da sua armação:</p>
+                    
+                    <div class="accordion-container">
+                        <button type="button" class="accordion-btn" id="acc-btn-1" aria-expanded="false" aria-controls="acc-panel-1">Solda a Laser</button>
+                        <div class="accordion-content" id="acc-panel-1" role="region" aria-labelledby="acc-btn-1">
+                            <p>Fusão microscópica em atmosfera controlada para armações de Titânio, Monel e Aço, garantindo a preservação elástica e visual da peça sem uso de calor destrutivo.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-2" aria-expanded="false" aria-controls="acc-panel-2">Substituição de Charneiras</button>
+                        <div class="accordion-content" id="acc-panel-2" role="region" aria-labelledby="acc-btn-2">
+                            <p>Reconstrução completa da engrenagem interna que une a haste à armação frontal, utilizando componentes importados de alta durabilidade.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-3" aria-expanded="false" aria-controls="acc-panel-3">Trocas e Alinhamento de Hastes</button>
+                        <div class="accordion-content" id="acc-panel-3" role="region" aria-labelledby="acc-btn-3">
+                            <p>Substituição de braços danificados com balanceamento simétrico de pressão temporal para evitar dores de cabeça ou quedas.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-4" aria-expanded="false" aria-controls="acc-panel-4">Ajustes Ergonômicos e Parafusos</button>
+                        <div class="accordion-content" id="acc-panel-4" role="region" aria-labelledby="acc-btn-4">
+                            <p>Substituição de parafusos espanados, usinagem de novas roscas internas, substituição de plaquetas de silicone cirúrgico e buchas de nylon para armações de três peças (balgriff).</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-5" aria-expanded="false" aria-controls="acc-panel-5">Adaptações de Armações</button>
+                        <div class="accordion-content" id="acc-panel-5" role="region" aria-labelledby="acc-btn-5">
+                            <p>Modificações estruturais para garantir o encaixe perfeito das suas lentes de alto custo em novos modelos, respeitando eixos e centros ópticos.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-6" aria-expanded="false" aria-controls="acc-panel-6">Venda de Lentes</button>
+                        <div class="accordion-content" id="acc-panel-6" role="region" aria-labelledby="acc-btn-6">
+                            <p>Fornecimento de lentes digitais multifocais e de visão simples, com proteção contra luz azul e antirreflexo premium de última geração.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="scroll-section" id="section-lentes">
+                <div class="content-box-premium right">
+                    <span class="badge-laser">Laboratório Digital Integrado</span>
+                    <h2>Adaptação Inteligente de Lentes <br><span class="highlight">E Engenharia de Redimensionamento</span></h2>
+                    <p>Se a sua armação antiga sofreu um dano irreparável, você não precisa descartar suas lentes. Caso suas lentes atuais sejam de alta tecnologia (e tenham um alto custo agregado), <strong>nós fazemos a adaptação e o redimensionamento delas para uma armação totalmente nova</strong>, preservando milimetricamente o seu centro óptico e o eixo de astigmatismo.</p>
+                    <p>Além disso, atuamos como uma óptica premium completa, oferecendo lentes novas cortadas em CNC digital computadorizado:</p>
+                    
+                    <div class="accordion-container">
+                        <button type="button" class="accordion-btn" id="acc-btn-7" aria-expanded="false" aria-controls="acc-panel-7">Venda de Armações de Titânio</button>
+                        <div class="accordion-content" id="acc-panel-7" role="region" aria-labelledby="acc-btn-7">
+                            <p>Coleção exclusiva de armações premium em titânio e materiais nobres de altíssima durabilidade, aliando leveza, conforto e design sofisticado.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-8" aria-expanded="false" aria-controls="acc-panel-8">Multifocais Digitais de Alta Definição</button>
+                        <div class="accordion-content" id="acc-panel-8" role="region" aria-labelledby="acc-btn-8">
+                            <p>Campos visuais lateralmente expandidos, mapeados por software para eliminação completa das distorções.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-9" aria-expanded="false" aria-controls="acc-panel-9">Visão Simples Avançada</button>
+                        <div class="accordion-content" id="acc-panel-9" role="region" aria-labelledby="acc-btn-9">
+                            <p>Tratamentos antirreflexo multicamadas, proteção activa contra luz azul e lentes ultrafinas.</p>
+                        </div>
+
+                        <button type="button" class="accordion-btn" id="acc-btn-10" aria-expanded="false" aria-controls="acc-panel-10">Solares Tecnológicas</button>
+                        <div class="accordion-content" id="acc-panel-10" role="region" aria-labelledby="acc-btn-10">
+                            <p>Lentes solares polarizadas, com filtros de proteção UVA/UVB ativos e correção de grau.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="scroll-section" id="section-unidades">
+                <div class="side-by-side-wrapper">
+                    
+                    <div class="dual-box">
+                        <h2>Nossas <span class="highlight">Unidades</span></h2>
+                        <p>Encontre o laboratório Consertóculos mais próximo de você.</p>
+                        
+                        <div class="unidades-grid dual-grid">
+                            <div class="card-unidade">
+                                <h3>Unidade Centro</h3>
+                                <p><strong>Endereço:</strong> Rua da Óptica, 123 - Centro</p>
+                                <p><strong>Contato:</strong> (11) 99999-1111</p>
+                                <p><strong>Horário:</strong> Seg a Sex, 09h às 18h</p>
+                            </div>
+                            <div class="card-unidade">
+                                <h3>Unidade Sul</h3>
+                                <p><strong>Endereço:</strong> Av. dos Metais, 456 - Zona Sul</p>
+                                <p><strong>Contato:</strong> (11) 99999-2222</p>
+                                <p><strong>Horário:</strong> Seg a Sex, 09h às 18h</p>
+                            </div>
+                            <div class="card-unidade">
+                                <h3>Unidade Leste</h3>
+                                <p><strong>Endereço:</strong> Praça do Laser, 789 - Zona Leste</p>
+                                <p><strong>Contato:</strong> (11) 99999-3333</p>
+                                <p><strong>Horário:</strong> Seg a Sáb, 09h às 14h</p>
+                            </div>
+                            <div class="card-unidade">
+                                <h3>Unidade Norte</h3>
+                                <p><strong>Endereço:</strong> Boulevard do Titânio, 101 - Zona Norte</p>
+                                <p><strong>Contato:</strong> (11) 99999-4444</p>
+                                <p><strong>Horário:</strong> Seg a Sex, 10h às 19h</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dual-box central" id="section-contato">
+                        <h2>Entre em <span class="highlight">Contato</span></h2>
+                        <p>Agende sua avaliação técnica ou tire dúvidas diretamente com nossa equipe de engenharia óptica.</p>
+                        
+                        <form class="stealth-form">
+                            <div class="form-group">
+                                <label for="form-nome" class="sr-only">Seu Nome Completo</label>
+                                <input type="text" id="form-nome" placeholder="Seu Nome Completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-email" class="sr-only">Seu E-mail</label>
+                                <input type="email" id="form-email" placeholder="Seu E-mail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-tel" class="sr-only">Seu WhatsApp</label>
+                                <input type="tel" id="form-tel" placeholder="(11) 99999-9999" maxlength="15" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-mensagem" class="sr-only">Descreva o problema ou serviço desejado</label>
+                                <textarea id="form-mensagem" placeholder="Descreva o problema ou serviço desejado" rows="5" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="form-fotos" style="display: block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #34d399; margin-bottom: 8px; text-align: left;">
+                                    Anexar Fotos do Óculos (Máx. 3 imagens):
+                                </label>
+                                <input type="file" id="form-fotos" accept="image/png, image/jpeg, image/webp" multiple style="padding: 12px 20px;">
+                                
+                                <div id="file-preview-container" style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"></div>
+                            </div>
+
+                            <button type="submit" class="cta-button form-submit">Enviar Solicitação</button>
+                            
+                            <div class="form-logo-space">
+                                <span class="logo-text-medium">Consertóculos</span>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="scroll-section" id="section-footer">
+                <div class="content-box-premium central seal-box">
+                    <h2 class="brand-title">CONSERTÓCULOS</h2>
+                    <p class="subtitle">Laser Technologies • Tradicional desde 1979</p>
+                    <p class="footer-deep-text">47 anos de autoridade de mercado chancelam cada reparo que sai de nossas bancadas. Atendemos colecionadores de peças vintage, usuários de óculos de alta performance e redes ópticas parceiras em todo o território nacional através de logística segura via Sedex ou atendimento presencial em nosso laboratório central.</p>
+                </div>
+            </section>
+
+        </div> 
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
