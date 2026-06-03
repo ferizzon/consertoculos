@@ -114,11 +114,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 100);
     });
 
-    // ==========================================================================
-    // NOTA: O ouvinte manual 'window.addEventListener("scroll")' foi removido.
-    // O GSAP ScrollTrigger agora gerencia o fluxo de rolagem nativamente com LERP.
-    // ==========================================================================
-
     function initScrollAnimation() {
         gsap.registerPlugin(ScrollTrigger);
         
@@ -145,6 +140,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initMasks();
         initPhotoUploader();
         initFormSubmit();
+        initMobileMenu(); // Inicializa o controle do menu responsivo lateral
     }
 
     function initTextAnimations() {
@@ -188,6 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 } else {
                     panel.style.maxHeight = panel.scrollHeight + "px";
                 }
+                
                 
                 setTimeout(() => {
                     setVideoHeight();
@@ -317,6 +314,30 @@ window.addEventListener('DOMContentLoaded', () => {
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
             }
+        });
+    }
+
+    // Gerenciador de abertura/fechamento do menu lateral móvel
+    function initMobileMenu() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainNav = document.querySelector('.main-nav');
+        const navLinks = document.querySelectorAll('.main-nav a');
+
+        if (!menuToggle || !mainNav) return;
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mainNav.classList.toggle('open');
+            menuToggle.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Fecha a barra lateral automaticamente ao clicar em qualquer link do menu
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('open');
+                menuToggle.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            });
         });
     }
 
