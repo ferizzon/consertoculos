@@ -491,16 +491,17 @@ p strong { color: #ffffff; }
     animation: pulse 2s infinite;
 }
 
-/* Alterado: Ajuste milimétrico do tamanho e tracking máximo para blindar o box desktop */
+/* Corrigido: Teto reduzido para max 2.2rem e tracking fixado para blindar vazamentos no desktop */
 .seal-box .brand-title {
-    font-size: clamp(1.4rem, 4.2vw, 2.6rem); 
-    letter-spacing: clamp(2px, 0.4vw, 4px);
+    font-size: clamp(1.4rem, 4vw, 2.2rem); 
+    letter-spacing: 3px;
     color: #ffffff;
     font-weight: 900;
     margin-top: 20px;       
     margin-bottom: 15px;    
     line-height: 1.1;
     width: 100%;
+    text-align: center;
 }
 
 .seal-box .subtitle {
@@ -576,14 +577,14 @@ p strong { color: #ffffff; }
         display: block;
     }
 
-    /* Alterado: Transparência e desfoque sincronizados com o padrão do laboratório (0.65) */
+    /* Corrigido: Fundo escurecido (0.92) para anular o esbranquiçado do blur do canvas */
     .main-nav {
         position: fixed;
         top: 0;
         right: -100%; 
         width: 280px;
         height: 100vh;
-        background: rgba(10, 10, 12, 0.65); 
+        background: rgba(0, 0, 0, 0.92); 
         backdrop-filter: blur(25px); 
         -webkit-backdrop-filter: blur(25px);
         border-left: 1px solid rgba(16, 185, 129, 0.3);
@@ -619,24 +620,34 @@ p strong { color: #ffffff; }
         font-size: 1.5rem; 
     }
     
-    /* Alterado: Escalonamento responsivo do título do selo no mobile */
+    /* Corrigido: Centralização absoluta e teto seguro contra quebras no mobile */
     .seal-box .brand-title { 
-        font-size: clamp(1.2rem, 7vw, 2.2rem) !important; 
+        font-size: clamp(1.2rem, 6.5vw, 1.8rem) !important; 
         letter-spacing: 2px !important;
+        text-align: center !important;
+        margin: 20px auto 15px auto !important;
+        display: block;
     }
     
     .seal-box .subtitle {
         font-size: 0.9rem;
         letter-spacing: 2px;
         margin-bottom: 30px;
+        text-align: center;
+        width: 100%;
     }
 
     .content-box-premium, .dual-box { 
         padding: 30px 20px; 
     }
     
+    /* Corrigido: Garante o alinhamento flex central do container do selo no mobile */
     .content-box-premium.seal-box {
         padding: 60px 24px !important; 
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
     }
 
     .unidades-grid, .tech-spec-grid { 
