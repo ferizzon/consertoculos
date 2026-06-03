@@ -45,16 +45,16 @@ a {
     background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); 
     border-bottom: 1px solid rgba(16, 185, 129, 0.3);
     display: flex;
-    flex-direction: row; /* Alterado para alinhar em linha */
-    justify-content: space-between; /* Move o logo para a esquerda e o menu para a direita */
+    flex-direction: row; 
+    justify-content: space-between; 
     align-items: center;
-    padding: 20px 4%; /* Margem lateral dinâmica */
+    padding: 20px 4%; 
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
 
 .logo-container {
-    margin-bottom: 0; /* Removida margem inferior antiga */
+    margin-bottom: 0; 
 }
 
 .logo-link {
@@ -242,7 +242,7 @@ a {
 
 .seal-box {
     border-top: 3px solid #10b981 !important;
-    padding: 100px 5% !important; /* Otimizado com margens percentuais fluidas */
+    padding: 100px 6% !important; 
 }
 
 /* ==========================================================================
@@ -491,9 +491,10 @@ p strong { color: #ffffff; }
     animation: pulse 2s infinite;
 }
 
+/* Alterado: Ajuste milimétrico do tamanho e tracking máximo para blindar o box desktop */
 .seal-box .brand-title {
-    font-size: clamp(2rem, 4.5vw, 4.5rem); /* Escalável e otimizado para desktop */
-    letter-spacing: clamp(2px, 0.5vw, 6px);
+    font-size: clamp(1.4rem, 4.2vw, 2.6rem); 
+    letter-spacing: clamp(2px, 0.4vw, 4px);
     color: #ffffff;
     font-weight: 900;
     margin-top: 20px;       
@@ -571,21 +572,20 @@ p strong { color: #ffffff; }
         letter-spacing: 1px;
     }
 
-    /* Ativa o botão hambúrguer no mobile */
     .menu-toggle {
         display: block;
     }
 
-    /* Transforma o menu em painel lateral direito oculto */
+    /* Alterado: Transparência e desfoque sincronizados com o padrão do laboratório (0.65) */
     .main-nav {
         position: fixed;
         top: 0;
         right: -100%; 
         width: 280px;
         height: 100vh;
-        background: rgba(10, 10, 12, 0.98);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(10, 10, 12, 0.65); 
+        backdrop-filter: blur(25px); 
+        -webkit-backdrop-filter: blur(25px);
         border-left: 1px solid rgba(16, 185, 129, 0.3);
         flex-direction: column;
         justify-content: center;
@@ -597,7 +597,6 @@ p strong { color: #ffffff; }
         flex-wrap: nowrap;
     }
 
-    /* Classe ativa via JS para abrir o menu */
     .main-nav.open {
         right: 0;
     }
@@ -620,9 +619,9 @@ p strong { color: #ffffff; }
         font-size: 1.5rem; 
     }
     
-    /* Otimização definitiva do Selo Final no celular (Sem estourar a tela) */
+    /* Alterado: Escalonamento responsivo do título do selo no mobile */
     .seal-box .brand-title { 
-        font-size: clamp(1.5rem, 8vw, 2.2rem) !important; 
+        font-size: clamp(1.2rem, 7vw, 2.2rem) !important; 
         letter-spacing: 2px !important;
     }
     
