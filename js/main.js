@@ -31,6 +31,20 @@ window.addEventListener('DOMContentLoaded', () => {
     // Array estruturada para armazenar os arquivos e seus IDs únicos de controle
     let arquivosSelecionados = [];
 
+    // OTIMIZAÇÃO: Função isolada para redimensionar o Canvas APENAS quando a tela mudar de tamanho
+    function resizeCanvas() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.style.width = viewportWidth + "px";
+        canvas.style.height = viewportHeight + "px";
+        canvas.width = viewportWidth * dpr;
+        canvas.height = viewportHeight * dpr;
+
+        context.scale(dpr, dpr);
+    }
+
     // SISTEMA DE PRELOAD PROGRESSIVO: Carrega a primeira dobra rápido e libera a página
     function preloadImages() {
         const initialBatch = 30; // Quantidade de frames essenciais para carregar o visual de imediato
@@ -53,6 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // OTIMIZAÇÃO: O render agora APENAS desenha na tela, sem recalcular o tamanho do canvas a cada frame
     function render() {
         const currentFrameIndex = Math.floor(airframes.frame);
         if (!images[currentFrameIndex]) return;
@@ -62,14 +77,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const dpr = window.devicePixelRatio || 1;
-
-        canvas.style.width = viewportWidth + "px";
-        canvas.style.height = viewportHeight + "px";
-        canvas.width = viewportWidth * dpr;
-        canvas.height = viewportHeight * dpr;
-
-        context.scale(dpr, dpr);
 
         const imageWidth = img.width;
         const imageHeight = img.height;
@@ -95,45 +102,44 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Ouvinte de Redimensionamento otimizado
     let resizeTimeout;
     window.addEventListener("resize", () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
+            resizeCanvas(); // Ajusta o canvas de forma controlada
             render();
             setVideoHeight();
             ScrollTrigger.refresh();
         }, 100);
     });
 
-    // SISTEMA OTIMIZADO COM REQUESTANIMATIONFRAME (Evita engasgos em telas touch/120Hz)
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        if (!videoScrollMax) return;
-        
-        if (!scrollTimeout) {
-            window.requestAnimationFrame(() => {
-                let progress = window.scrollY / videoScrollMax;
-                if (progress < 0) progress = 0;
-                if (progress > 1) progress = 1;
-
-                gsap.to(airframes, {
-                    frame: progress * (frameCount - 1),
-                    duration: 0.1,
-                    ease: "none",
-                    overwrite: "auto",
-                    onUpdate: render
-                });
-                scrollTimeout = false;
-            });
-            scrollTimeout = true;
-        }
-    }, { passive: true }); // passive flag melhora a performance de scroll em dispositivos móveis
+    // ==========================================================================
+    // NOTA: O ouvinte manual 'window.addEventListener("scroll")' foi removido.
+    // O GSAP ScrollTrigger agora gerencia o fluxo de rolagem nativamente com LERP.
+    // ==========================================================================
 
     function initScrollAnimation() {
         gsap.registerPlugin(ScrollTrigger);
+        
+        resizeCanvas(); // Define o tamanho estrutural do canvas antes do primeiro desenho
         setVideoHeight();
         setTimeout(setVideoHeight, 500); 
         render();
+
+        // CONTROLE DO CANVAS POR SCROLLTRIGGER (Suavização e interpolação linear profissional)
+        gsap.to(airframes, {
+            frame: frameCount - 1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#video-track", // Elemento pai que define a área de scroll do vídeo
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.5, // 0.5 segundos de atraso suave para corrigir o efeito "travado"
+                onUpdate: render // Renderiza o canvas a cada micro-movimentação calculada pelo GSAP
+            }
+        });
+
         initTextAnimations(); 
         initAccordion(); 
         initMasks();
