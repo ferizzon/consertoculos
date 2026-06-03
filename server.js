@@ -57,11 +57,11 @@ const upload = multer({
    3. PROVEDOR DE SERVIÇO DE DISPARO (SMTP / NODEMAILER)
    ========================================================================== */
 const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
     auth: {
-        user: "283cc9ad099f70", 
-        pass: "e5e98e09489777"  
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
     }
 });
 
@@ -161,6 +161,6 @@ app.post('/api/contato', contactLimiter, upload.array('imagens', 3), async (req,
 
 // Inicialização e Escuta do Processo
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor de Segurança Máxima operacional na porta ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => { // Adicione o '0.0.0.0' para o Render acessar
+    console.log(`Servidor rodando na porta ${PORT}`);
 });

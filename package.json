@@ -1,26 +1,21 @@
 {
   "name": "consertoculos",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.6",
-    "dompurify": "^3.4.7",
-    "express": "^5.2.1",
-    "express-rate-limit": "^8.5.2",
-    "file-type": "^22.0.1",
-    "helmet": "^8.2.0",
-    "jsdom": "^29.1.1",
-    "multer": "^2.1.1",
-    "nodemailer": "^8.0.10",
-    "sharp": "^0.34.5"
+    "cors": "^2.8.5",
+    "dompurify": "^3.2.4",
+    "express": "^5.0.1",
+    "express-rate-limit": "^7.5.0",
+    "file-type": "^19.9.0",
+    "helmet": "^8.0.0",
+    "jsdom": "^26.0.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.0",
+    "sharp": "^0.33.5"
   }
 }
