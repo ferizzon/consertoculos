@@ -77,19 +77,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-
-        const imageWidth = img.width;
-        const imageHeight = img.height;
-        
-        const ratio = Math.max(viewportWidth / imageWidth, viewportHeight / imageHeight);
-        const newWidth = imageWidth * ratio;
-        const newHeight = imageHeight * ratio;
-        
-        const x = (viewportWidth - newWidth) / 2;
-        const y = (viewportHeight - newHeight) / 2;
+        const isMobile = viewportWidth <= 768; // Detecta orientação/dispositivo mobile baseado no seu CSS
 
         context.clearRect(0, 0, viewportWidth, viewportHeight);
-        context.drawImage(img, x, y, newWidth, newHeight);
+        context.save(); // Salva o estado limpo do canvas
+
+        if (isMobile) {
+            // 1. Move o ponto de origem para o centro do canvas para rotacionar perfeitamente
+            context.translate(viewportWidth / 2, viewportHeight / 2);
+            
+            // 2. Rotaciona 90 graus em radianos (90 * Math.PI / 180)
+            context.rotate(Math.PI / 2);
+
+            // 3. Como rotacionamos o contexto, a largura da imagem deve preencher a ALTURA da tela e vice-versa
+            const ratio = Math.max(viewportHeight / img.width, viewportWidth / img.height);
+            const newWidth = img.width * ratio;
+            const newHeight = img.height * ratio;
+
+            // 4. Desenha a imagem centralizada a partir do novo ponto de origem central
+            context.drawImage(img, -newWidth / 2, -newHeight / 2, newWidth, newHeight);
+        } else {
+            // Lógica original intocada para Desktop
+            const imageWidth = img.width;
+            const imageHeight = img.height;
+            
+            const ratio = Math.max(viewportWidth / imageWidth, viewportHeight / imageHeight);
+            const newWidth = imageWidth * ratio;
+            const newHeight = imageHeight * ratio;
+            
+            const x = (viewportWidth - newWidth) / 2;
+            const y = (viewportHeight - newHeight) / 2;
+
+            context.drawImage(img, x, y, newWidth, newHeight);
+        }
+
+        context.restore(); // Restaura o estado do canvas para evitar que as transformações se acumulem
     }
 
     function setVideoHeight() {
