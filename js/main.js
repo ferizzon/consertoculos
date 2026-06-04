@@ -45,9 +45,9 @@ window.addEventListener('DOMContentLoaded', () => {
         context.scale(dpr, dpr);
     }
 
-    // SISTEMA DE PRELOAD PROGRESSIVO ATUALIZADO COM DECODE ANTECIPADO
+    // SISTEMA DE PRELOAD COM SUPORTE A PERSISTÊNCIA VISUAL
     function preloadImages() {
-        const initialBatch = 30; // Lote crítico para a primeira dobra
+        const initialBatch = 30; 
         let loadedInitial = 0;
 
         for (let i = 0; i < frameCount; i++) {
@@ -56,17 +56,15 @@ window.addEventListener('DOMContentLoaded', () => {
             
             img.onload = () => {
                 if (i < initialBatch) {
-                    // Força a GPU a decodificar a imagem em background ANTES de renderizar na tela
                     img.decode()
                         .then(() => {
                             loadedInitial++;
                             if (loadedInitial === initialBatch && !isInitialRendered) {
                                 isInitialRendered = true;
-                                initScrollAnimation(); // Libera o site com os frames já mastigados pela GPU
+                                initScrollAnimation();
                             }
                         })
                         .catch(() => {
-                            // Fallback caso o decode falhe ou seja interrompido
                             loadedInitial++;
                             if (loadedInitial === initialBatch && !isInitialRendered) {
                                 isInitialRendered = true;
@@ -79,37 +77,47 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // OTIMIZAÇÃO: O render agora APENAS desenha na tela, sem recalcular o tamanho do canvas a cada frame
+    // Variável de controle global (coloque no topo do escopo, junto com let isInitialRendered)
+    let lastValidFrameIndex = 0;
+
+    // OTIMIZAÇÃO: Render com persistência visual para evitar telas pretas em scrolls rápidos
     function render() {
-        const currentFrameIndex = Math.floor(airframes.frame);
-        if (!images[currentFrameIndex]) return;
+        let currentFrameIndex = Math.floor(airframes.frame);
+        
+        // Se o frame atual não existir ou não estiver pronto, tenta usar o último frame que deu certo
+        if (!images[currentFrameIndex] || !images[currentFrameIndex].complete) {
+            currentFrameIndex = lastValidFrameIndex;
+        }
 
         const img = images[currentFrameIndex];
-        if (!img.complete) return; 
+        if (!img || !img.complete) return; // Fallback de segurança absoluto
+
+        // Atualiza o histórico do último frame renderizado com sucesso
+        lastValidFrameIndex = currentFrameIndex;
 
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const isMobile = viewportWidth <= 768; // Detecta orientação/dispositivo mobile baseado no seu CSS
+        const isMobile = viewportWidth <= 768;
 
-        context.clearRect(0, 0, viewportWidth, viewportHeight);
-        context.save(); // Salva o estado limpo do canvas
+        // IMPORTANTE: Em vez de clearRect (que apaga tudo e causa o flash preto), 
+        // o preenchimento proporcional (cover) já vai cobrir a tela inteira.
+        // Só limpamos se a orientação mudar drasticamente para evitar resíduos.
+        if (context.canvas.width !== viewportWidth * (window.devicePixelRatio || 1)) {
+            context.clearRect(0, 0, viewportWidth, viewportHeight);
+        }
+
+        context.save();
 
         if (isMobile) {
-            // 1. Move o ponto de origem para o centro do canvas para rotacionar perfeitamente
             context.translate(viewportWidth / 2, viewportHeight / 2);
-            
-            // 2. Rotaciona 90 graus em radianos (90 * Math.PI / 180)
             context.rotate(Math.PI / 2);
 
-            // 3. Como rotacionamos o contexto, a largura da imagem deve preencher a ALTURA da tela e vice-versa
             const ratio = Math.max(viewportHeight / img.width, viewportWidth / img.height);
             const newWidth = img.width * ratio;
             const newHeight = img.height * ratio;
 
-            // 4. Desenha a imagem centralizada a partir do novo ponto de origem central
             context.drawImage(img, -newWidth / 2, -newHeight / 2, newWidth, newHeight);
         } else {
-            // Lógica original intocada para Desktop
             const imageWidth = img.width;
             const imageHeight = img.height;
             
@@ -123,7 +131,7 @@ window.addEventListener('DOMContentLoaded', () => {
             context.drawImage(img, x, y, newWidth, newHeight);
         }
 
-        context.restore(); // Restaura o estado do canvas para evitar que as transformações se acumulem
+        context.restore();
     }
 
     function setVideoHeight() {
