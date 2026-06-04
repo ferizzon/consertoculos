@@ -13,7 +13,6 @@ if (typeof ScrollTrigger !== 'undefined') {
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    // Total alterado para 311 frames após a exclusão dos 3 itens desejados
     const frameCount = 311; 
     
     const currentFrame = index => (
@@ -27,25 +26,29 @@ window.addEventListener('DOMContentLoaded', () => {
     
     let videoScrollMax = 1000; 
     let isInitialRendered = false;
+    let lastValidFrameIndex = 0; // Evita telas pretas sustentando o último frame processado
+    let lastWidth = window.innerWidth; // Isola o resize do mobile contra oscilações de barras nativas
+    let resizeTimeout;
 
     // Array estruturada para armazenar os arquivos e seus IDs únicos de controle
     let arquivosSelecionados = [];
 
-    // OTIMIZAÇÃO: Função isolada para redimensionar o Canvas APENAS quando a tela mudar de tamanho
+    // OTIMIZAÇÃO: Define dimensões estruturais estendidas no mobile para absorver trancos de scroll
     function resizeCanvas() {
         const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+        const isMobile = viewportWidth <= 768;
+        const viewportHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
         const dpr = window.devicePixelRatio || 1;
 
         canvas.style.width = viewportWidth + "px";
-        canvas.style.height = viewportHeight + "px";
+        canvas.style.height = (isMobile ? window.innerHeight * 1.15 : window.innerHeight) + "px";
         canvas.width = viewportWidth * dpr;
         canvas.height = viewportHeight * dpr;
 
         context.scale(dpr, dpr);
     }
 
-    // SISTEMA DE PRELOAD COM SUPORTE A PERSISTÊNCIA VISUAL
+    // SISTEMA DE PRELOAD COM DECODE ANTECIPADO: Libera a GPU antes do primeiro toque na tela
     function preloadImages() {
         const initialBatch = 30; 
         let loadedInitial = 0;
@@ -77,34 +80,22 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Variável de controle global (coloque no topo do escopo, junto com let isInitialRendered)
-    let lastValidFrameIndex = 0;
-
-    // OTIMIZAÇÃO: Render com persistência visual para evitar telas pretas em scrolls rápidos
+    // RENDER: Processa e desenha com persistência e supressão de flashes pretos
     function render() {
         let currentFrameIndex = Math.floor(airframes.frame);
         
-        // Se o frame atual não existir ou não estiver pronto, tenta usar o último frame que deu certo
         if (!images[currentFrameIndex] || !images[currentFrameIndex].complete) {
             currentFrameIndex = lastValidFrameIndex;
         }
 
         const img = images[currentFrameIndex];
-        if (!img || !img.complete) return; // Fallback de segurança absoluto
+        if (!img || !img.complete) return; 
 
-        // Atualiza o histórico do último frame renderizado com sucesso
         lastValidFrameIndex = currentFrameIndex;
 
         const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
         const isMobile = viewportWidth <= 768;
-
-        // IMPORTANTE: Em vez de clearRect (que apaga tudo e causa o flash preto), 
-        // o preenchimento proporcional (cover) já vai cobrir a tela inteira.
-        // Só limpamos se a orientação mudar drasticamente para evitar resíduos.
-        if (context.canvas.width !== viewportWidth * (window.devicePixelRatio || 1)) {
-            context.clearRect(0, 0, viewportWidth, viewportHeight);
-        }
+        const viewportHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
 
         context.save();
 
@@ -144,12 +135,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Ouvinte de Redimensionamento otimizado
-    let resizeTimeout;
+    // Ouvinte de Redimensionamento Inteligente (Ignora trancos das barras de navegação do mobile)
     window.addEventListener("resize", () => {
+        const currentWidth = window.innerWidth;
+        
+        if (currentWidth === lastWidth && currentWidth <= 768) return;
+        
+        lastWidth = currentWidth;
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            resizeCanvas(); // Ajusta o canvas de forma controlada
+            resizeCanvas(); 
             render();
             setVideoHeight();
             ScrollTrigger.refresh();
@@ -159,12 +154,12 @@ window.addEventListener('DOMContentLoaded', () => {
     function initScrollAnimation() {
         gsap.registerPlugin(ScrollTrigger);
         
-        resizeCanvas(); // Define o tamanho estrutural do canvas antes do primeiro desenho
+        resizeCanvas(); 
         setVideoHeight();
         setTimeout(setVideoHeight, 500); 
         render();
 
-        // CONTROLE DO CANVAS POR SCROLLTRIGGER ATUALIZADO CONTRA VAZAMENTO MOBILE
+        // CONTROLE DO CANVAS POR SCROLLTRIGGER - ALINHAMENTO ORIGINAL PERFEITO
         gsap.to(airframes, {
             frame: frameCount - 1,
             ease: "none",
@@ -172,13 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: window.innerWidth <= 768 ? 0.4 : 0.5, // Scrub ligeiramente mais responsivo no mobile para colar no dedo
-                
-                // ADICIONADOS PARA CORRIGIR O ESPAÇO PRETO:
-                pin: "#scrollytelling-container", // Força o GSAP a gerenciar a fixação do container
-                pinType: "fixed", // Garante o uso de posicionamento fixo em vez de transforms para o pin
-                anticipatePin: 1, // Calcula a fixação antes do tranco inicial do scroll
-                
+                scrub: window.innerWidth <= 768 ? 0.8 : 0.5, 
                 onUpdate: render 
             }
         });
@@ -188,7 +177,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initMasks();
         initPhotoUploader();
         initFormSubmit();
-        initMobileMenu(); // Inicializa o controle do menu responsivo lateral
+        initMobileMenu(); 
     }
 
     function initTextAnimations() {
@@ -233,7 +222,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     panel.style.maxHeight = panel.scrollHeight + "px";
                 }
                 
-                
                 setTimeout(() => {
                     setVideoHeight();
                     ScrollTrigger.refresh();
@@ -242,7 +230,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // MÁSCARA AUTOMÁTICA DE WHATSAPP (Ajusta dinamicamente fixo ou celular)
     function initMasks() {
         const telInput = document.getElementById('form-tel');
         if (!telInput) return;
@@ -264,7 +251,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // GERENCIADOR VISUAL DE ADICIONAR E REMOVER FOTOS INDIVIDUAMENTE
     function initPhotoUploader() {
         const inputFoto = document.getElementById('form-fotos');
         const previewContainer = document.getElementById('file-preview-container');
@@ -280,7 +266,6 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             files.forEach(file => {
-                // Criação de um ID único baseado em timestamp + string aleatória para blindar a deleção individual
                 const uniqueId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
                 
                 arquivosSelecionados.push({
@@ -301,10 +286,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 reader.readAsDataURL(file);
             });
 
-            inputFoto.value = ''; // Reseta o campo do DOM
+            inputFoto.value = ''; 
         });
 
-        // Evento delegativo corrigido com busca baseada no ID único criptográfico
         previewContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-btn')) {
                 const targetId = e.target.getAttribute('data-id');
@@ -330,7 +314,6 @@ window.addEventListener('DOMContentLoaded', () => {
             formData.append('whatsapp', document.getElementById('form-tel').value);
             formData.append('mensagem', document.getElementById('form-mensagem').value);
 
-            // Coleta os arquivos reais de dentro da nossa array de objetos limpa
             arquivosSelecionados.forEach(item => {
                 formData.append('imagens', item.fileData);
             });
@@ -365,7 +348,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Gerenciador de abertura/fechamento do menu lateral móvel
     function initMobileMenu() {
         const menuToggle = document.querySelector('.menu-toggle');
         const mainNav = document.querySelector('.main-nav');
@@ -379,7 +361,6 @@ window.addEventListener('DOMContentLoaded', () => {
             menuToggle.setAttribute('aria-expanded', isOpen);
         });
 
-        // Fecha a barra lateral automaticamente ao clicar em qualquer link do menu
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('open');
