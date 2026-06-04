@@ -148,7 +148,7 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     height: -webkit-fill-available; 
     z-index: 1;
@@ -156,6 +156,13 @@ a {
     justify-content: center;
     align-items: center;
     background-color: #000000;
+    
+    /* ADICIONADO: Força o navegador a manter o container fixado no topo de forma prioritária */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    
+    /* Sangria de segurança: impede micro-vazamentos nas bordas em scrolls violentos */
+    padding-bottom: 10px; 
 }
 
 #animation-canvas {

@@ -164,7 +164,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(setVideoHeight, 500); 
         render();
 
-        // CONTROLE DO CANVAS POR SCROLLTRIGGER COM TIMING SUAVIZADO
+        // CONTROLE DO CANVAS POR SCROLLTRIGGER ATUALIZADO CONTRA VAZAMENTO MOBILE
         gsap.to(airframes, {
             frame: frameCount - 1,
             ease: "none",
@@ -172,9 +172,13 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                // Aumentamos levemente para 0.8 no mobile para suavizar a retomada do scroll parado
-                scrub: window.innerWidth <= 768 ? 0.8 : 0.5, 
-                anticipatePin: 1, // Previne atrasos de cálculo no início do primeiro scroll fixado
+                scrub: window.innerWidth <= 768 ? 0.4 : 0.5, // Scrub ligeiramente mais responsivo no mobile para colar no dedo
+                
+                // ADICIONADOS PARA CORRIGIR O ESPAÇO PRETO:
+                pin: "#scrollytelling-container", // Força o GSAP a gerenciar a fixação do container
+                pinType: "fixed", // Garante o uso de posicionamento fixo em vez de transforms para o pin
+                anticipatePin: 1, // Calcula a fixação antes do tranco inicial do scroll
+                
                 onUpdate: render 
             }
         });
