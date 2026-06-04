@@ -45,22 +45,34 @@ window.addEventListener('DOMContentLoaded', () => {
         context.scale(dpr, dpr);
     }
 
-    // SISTEMA DE PRELOAD PROGRESSIVO: Carrega a primeira dobra rápido e libera a página
+    // SISTEMA DE PRELOAD PROGRESSIVO ATUALIZADO COM DECODE ANTECIPADO
     function preloadImages() {
-        const initialBatch = 30; // Quantidade de frames essenciais para carregar o visual de imediato
+        const initialBatch = 30; // Lote crítico para a primeira dobra
         let loadedInitial = 0;
 
-        // Passagem 1: Carrega os primeiros frames de forma prioritária
         for (let i = 0; i < frameCount; i++) {
             const img = new Image();
             img.src = currentFrame(i);
+            
             img.onload = () => {
                 if (i < initialBatch) {
-                    loadedInitial++;
-                    if (loadedInitial === initialBatch && !isInitialRendered) {
-                        isInitialRendered = true;
-                        initScrollAnimation(); // Inicia a página de forma ultra rápida
-                    }
+                    // Força a GPU a decodificar a imagem em background ANTES de renderizar na tela
+                    img.decode()
+                        .then(() => {
+                            loadedInitial++;
+                            if (loadedInitial === initialBatch && !isInitialRendered) {
+                                isInitialRendered = true;
+                                initScrollAnimation(); // Libera o site com os frames já mastigados pela GPU
+                            }
+                        })
+                        .catch(() => {
+                            // Fallback caso o decode falhe ou seja interrompido
+                            loadedInitial++;
+                            if (loadedInitial === initialBatch && !isInitialRendered) {
+                                isInitialRendered = true;
+                                initScrollAnimation();
+                            }
+                        });
                 }
             };
             images.push(img);
@@ -144,16 +156,18 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(setVideoHeight, 500); 
         render();
 
-        // CONTROLE DO CANVAS POR SCROLLTRIGGER (Suavização e interpolação linear profissional)
+        // CONTROLE DO CANVAS POR SCROLLTRIGGER COM TIMING SUAVIZADO
         gsap.to(airframes, {
             frame: frameCount - 1,
             ease: "none",
             scrollTrigger: {
-                trigger: "#video-track", // Elemento pai que define a área de scroll do vídeo
+                trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 0.5, // 0.5 segundos de atraso suave para corrigir o efeito "travado"
-                onUpdate: render // Renderiza o canvas a cada micro-movimentação calculada pelo GSAP
+                // Aumentamos levemente para 0.8 no mobile para suavizar a retomada do scroll parado
+                scrub: window.innerWidth <= 768 ? 0.8 : 0.5, 
+                anticipatePin: 1, // Previne atrasos de cálculo no início do primeiro scroll fixado
+                onUpdate: render 
             }
         });
 
