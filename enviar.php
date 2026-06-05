@@ -27,12 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Configurações de conexão autenticada com o servidor Titan
         $mail->isSMTP();
-        $mail->Host       = 'smtp.titan.email';                  
+        $mail->Host       = 'localhost';                         // <<< ALTERADO: Conecta direto no servidor local
         $mail->SMTPAuth   = true;                                 
         $mail->Username   = 'contato@consertoculos.com.br';       
-        $mail->Password   = 'Al@n252308'; // <-- Certifique-se de que é a senha do WEBMAIL
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;       // <<< ALTERADO: Mudança para SSL implícito
-        $mail->Port       = 465;                                // Porta padrão de envio da Titan
+        $mail->Password   = 'SUA_SENHA_DO_WEBMAIL_AQUI';         // <<< Certifique-se de que é a senha do e-mail contato@
+        $mail->SMTPSecure = false;                               // <<< ALTERADO: Como é interno (localhost), não usa criptografia na porta local
+        $mail->SMTPAutoTLS = false;                              // <<< ALTERADO: Desativa o TLS automático para evitar conflito de certificados
+        $mail->Port       = 25;                               // Porta padrão de envio da Titan
 
         // Configuração de Remetente e Destinatário
         $mail->setFrom('contato@consertoculos.com.br', 'Consertóculos Lab');
