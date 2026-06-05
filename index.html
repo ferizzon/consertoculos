@@ -184,29 +184,33 @@
                         <h2>Entre em <span class="highlight">Contato</span></h2>
                         <p>Agende sua avaliação técnica ou tire dúvidas diretamente com nossa equipe de engenharia óptica.</p>
                         
-                        <form class="stealth-form">
+                        <form class="stealth-form" action="enviar.php" method="POST" enctype="multipart/form-data">
+                            
                             <div class="form-group">
                                 <label for="form-nome" class="sr-only">Seu Nome Completo</label>
-                                <input type="text" id="form-nome" placeholder="Seu Nome Completo" required>
+                                <input type="text" id="form-nome" name="nome" placeholder="Seu Nome Completo" required>
                             </div>
+                            
                             <div class="form-group">
                                 <label for="form-email" class="sr-only">Seu E-mail</label>
-                                <input type="email" id="form-email" placeholder="Seu E-mail" required>
+                                <input type="email" id="form-email" name="email" placeholder="Seu E-mail" required>
                             </div>
+                            
                             <div class="form-group">
                                 <label for="form-tel" class="sr-only">Seu WhatsApp</label>
-                                <input type="tel" id="form-tel" placeholder="(11) 99999-9999" maxlength="15" required>
+                                <input type="tel" id="form-tel" name="whatsapp" placeholder="(11) 99999-9999" maxlength="15" required>
                             </div>
+                            
                             <div class="form-group">
                                 <label for="form-mensagem" class="sr-only">Descreva o problema ou serviço desejado</label>
-                                <textarea id="form-mensagem" placeholder="Descreva o problema ou serviço desejado" rows="5" required></textarea>
+                                <textarea id="form-mensagem" name="mensagem" placeholder="Descreva o problema ou serviço desejado" rows="5" required></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="form-fotos" style="display: block; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #34d399; margin-bottom: 8px; text-align: left;">
                                     Anexar Fotos do Óculos (Máx. 3 imagens):
                                 </label>
-                                <input type="file" id="form-fotos" accept="image/png, image/jpeg, image/webp" multiple style="padding: 12px 20px;">
+                                <input type="file" id="form-fotos" name="imagens[]" accept="image/png, image/jpeg, image/webp" multiple style="padding: 12px 20px;">
                                 
                                 <div id="file-preview-container" style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"></div>
                             </div>
