@@ -2,7 +2,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Carrega os 3 arquivos locais que criamos nos passos anteriores
 require 'Exception.php';
 require 'PHPMailer.php';
 require 'SMTP.php';
@@ -25,14 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // Configuração Nativa Localizada (Pula o bloqueio de firewall e SMTP da HostGator)
-        $mail->isMail();                                         // Usa o motor de envio local do próprio servidor Linux
+        // Altera para o motor interno padrão corrigido para servidores compartilhados
+        $mail->isMail();                                         
+
+        // Parâmetro Crítico HostGator: Força o servidor Linux a assinar com o domínio correto para pular o antispam local
+        $mail->Sender = 'contato@consertoculos.com.br';
 
         // Configuração de Remetente e Destinatário
         $mail->setFrom('contato@consertoculos.com.br', 'Consertóculos Lab');
-        $mail->addAddress('contato@consertoculos.com.br');        // Envia para a sua caixa profissional Titan
-        $mail->addAddress('rizzon.fil@gmail.com');                // Envia a cópia de segurança para o seu Gmail
-        $mail->addReplyTo($email, $nome);                         // Se você responder, vai direto para o cliente
+        $mail->addAddress('contato@consertoculos.com.br');        
+        $mail->addAddress('rizzon.fil@gmail.com');                
+        $mail->addReplyTo($email, $nome);                         
 
         // Processa e anexa as fotos dinamicamente
         if (!empty($_FILES['imagens']['name'][0])) {
