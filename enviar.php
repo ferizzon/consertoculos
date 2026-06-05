@@ -24,10 +24,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // Altera para o motor interno padrão corrigido para servidores compartilhados
-        $mail->isMail();                                         
+        // ==========================================
+        // CONFIGURAÇÃO DO SERVIDOR SMTP (TITAN / HOSTGATOR)
+        // ==========================================
+        $mail->isSMTP();                                      // Ativa o envio via SMTP
+        $mail->Host       = 'smtp.titan.email';               // Servidor SMTP padrão do Titan
+        $mail->SMTPAuth   = true;                             // Ativa a autenticação
+        $mail->Username   = 'contato@consertoculos.com.br';   // Seu e-mail Titan
+        $mail->Password   = 'Al@n306090';                     // Sua senha fornecida
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Segurança TLS obrigatória
+        $mail->Port       = 587;                              // Porta padrão para TLS
 
-        // Parâmetro Crítico HostGator: Força o servidor Linux a assinar com o domínio correto para pular o antispam local
+        // Parâmetro Crítico HostGator para evitar antispam local
         $mail->Sender = 'contato@consertoculos.com.br';
 
         // Configuração de Remetente e Destinatário
