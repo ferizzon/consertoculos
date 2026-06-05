@@ -13,7 +13,6 @@ require 'SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Inicializa a variável para evitar erros de aviso do PHP
 $GLOBALS['smtp_debug'] = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,19 +30,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // Captura o log de resposta do servidor de e-mail
         $mail->SMTPDebug = 2; 
         $mail->Debugoutput = function($str, $level) {
             $GLOBALS['smtp_debug'] .= $str . "\n";
         };
 
+        // ==========================================
+        // ALTERAÇÃO PARA PORTA 587 PROTOCOLO TLS
+        // ==========================================
         $mail->isSMTP();                                      
         $mail->Host       = 'smtp.titan.email';               
         $mail->SMTPAuth   = true;                             
         $mail->Username   = 'contato@consertoculos.com.br';   
-        $mail->Password   = 'Al@n306090'; 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      
-        $mail->Port       = 465;                              
+        $mail->Password   = 'Al@n2523306090'; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Mudou para TLS
+        $mail->Port       = 587;                            // Mudou para 587             
+
+        // Ignora travas de segurança do certificado do servidor local
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
 
         $mail->Sender = 'contato@consertoculos.com.br';
 
