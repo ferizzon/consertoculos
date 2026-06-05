@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $para = "contato@consertoculos.com.br";
+    $para = "rizzon.fil@gmail.com";
     $assunto = "🔬 Nova Solicitação de Reparo - Consertóculos";
     
     // Configuração do delimitador do e-mail com anexos
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Cabeçalhos do e-mail
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "From: Consertóculos Lab <$para>\r\n";
+    $headers .= "From: Consertóculos Lab <alante87@alanteixeiralopes1780672994593.2101853.meusitehostgator.com.br>\r\n";
     $headers .= "Reply-To: $email\r\n";
     $headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
     
