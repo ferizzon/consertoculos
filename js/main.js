@@ -30,20 +30,24 @@ window.addEventListener('DOMContentLoaded', () => {
     let lastWidth = window.innerWidth; // Isola o resize do mobile contra oscilações de barras nativas
     let resizeTimeout;
 
+    // OTIMIZAÇÃO CRÍTICA: Variáveis de cache para eliminar Layout Thrashing (Reflow) no loop do render
+    let cachedWidth = window.innerWidth;
+    let cachedHeight = window.innerHeight;
+
     // Array estruturada para armazenar os arquivos e seus IDs únicos de controle
     let arquivosSelecionados = [];
 
     // OTIMIZAÇÃO: Define dimensões estruturais estendidas no mobile para absorver trancos de scroll
     function resizeCanvas() {
-        const viewportWidth = window.innerWidth;
-        const isMobile = viewportWidth <= 768;
-        const viewportHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
+        cachedWidth = window.innerWidth;
+        const isMobile = cachedWidth <= 768;
+        cachedHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
         const dpr = window.devicePixelRatio || 1;
 
-        canvas.style.width = viewportWidth + "px";
+        canvas.style.width = cachedWidth + "px";
         canvas.style.height = (isMobile ? window.innerHeight * 1.15 : window.innerHeight) + "px";
-        canvas.width = viewportWidth * dpr;
-        canvas.height = viewportHeight * dpr;
+        canvas.width = cachedWidth * dpr;
+        canvas.height = cachedHeight * dpr;
 
         context.scale(dpr, dpr);
     }
@@ -93,17 +97,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
         lastValidFrameIndex = currentFrameIndex;
 
-        const viewportWidth = window.innerWidth;
-        const isMobile = viewportWidth <= 768;
-        const viewportHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
+        // OTIMIZAÇÃO: Lendo valores cacheados em vez de bater na API nativa do window (Performance Absoluta)
+        const isMobile = cachedWidth <= 768;
 
         context.save();
 
         if (isMobile) {
-            context.translate(viewportWidth / 2, viewportHeight / 2);
+            context.translate(cachedWidth / 2, cachedHeight / 2);
             context.rotate(Math.PI / 2);
 
-            const ratio = Math.max(viewportHeight / img.width, viewportWidth / img.height);
+            const ratio = Math.max(cachedHeight / img.width, cachedWidth / img.height);
             const newWidth = img.width * ratio;
             const newHeight = img.height * ratio;
 
@@ -112,12 +115,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const imageWidth = img.width;
             const imageHeight = img.height;
             
-            const ratio = Math.max(viewportWidth / imageWidth, viewportHeight / imageHeight);
+            const ratio = Math.max(cachedWidth / imageWidth, cachedHeight / imageHeight);
             const newWidth = imageWidth * ratio;
             const newHeight = imageHeight * ratio;
             
-            const x = (viewportWidth - newWidth) / 2;
-            const y = (viewportHeight - newHeight) / 2;
+            const x = (cachedWidth - newWidth) / 2;
+            const y = (cachedHeight - newHeight) / 2;
 
             context.drawImage(img, x, y, newWidth, newHeight);
         }
@@ -167,7 +170,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: window.innerWidth <= 768 ? 0.8 : 0.5, 
+                // OTIMIZAÇÃO: Alterado de 0.8 para 0.2 no mobile para dar resposta responsiva e fluida ao toque
+                scrub: cachedWidth <= 768 ? 0.2 : 0.5, 
                 onUpdate: render 
             }
         });
