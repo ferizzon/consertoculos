@@ -19,7 +19,9 @@ jobs:
       - name: Sincronizar via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}      # Puxa o IP que você escondeu lá no GitHub
-          username: ${{ secrets.FTP_USERNAME }}  # Puxa o Usuário que você escondeu
-          password: ${{ secrets.FTP_PASSWORD }}  # Puxa a Senha que você escondeu
-          server-dir: /public_html/              # A pasta que confirmamos no seu print!
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+          port: 21
+          security: loose
