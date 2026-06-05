@@ -15,27 +15,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $para = "rizzon.fil@gmail.com";
-    $assunto = "🔬 Nova Solicitação de Reparo - Consertóculos";
+    $assunto = "Nova Solicitacao de Reparo - Consertoculos"; // Sem caracteres especiais ou emojis temporariamente
     
     // Configuração do delimitador do e-mail com anexos
     $boundary = md5(time());
     
-    // Cabeçalhos do e-mail
+    // Cabeçalhos do e-mail padronizados
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "From: Consertóculos Lab <alante87@alanteixeiralopes1780672994593.2101853.meusitehostgator.com.br>\r\n";
+    $headers .= "From: Consertoculos Lab <alante87@alanteixeiralopes1780672994593.2101853.meusitehostgator.com.br>\r\n";
     $headers .= "Reply-To: $email\r\n";
     $headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
     
-    // Corpo da mensagem em HTML
+    // Corpo da mensagem em HTML com quebras corrigidas para o Gmail
     $corpo = "--$boundary\r\n";
     $corpo .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $corpo .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+    $corpo .= "Content-Transfer-Encoding: 8bit\r\n\r\n"; // Mudado para 8bit (melhor para acentos em HTML)
     $corpo .= "<h2>Nova mensagem recebida pelo site:</h2>";
     $corpo .= "<p><strong>Nome:</strong> $nome</p>";
     $corpo .= "<p><strong>E-mail:</strong> $email</p>";
     $corpo .= "<p><strong>WhatsApp:</strong> $whatsapp</p>";
-    $corpo .= "<p><strong>Descrição do problema:</strong><br>" . nl2br($mensagem) . "</p>";
-    $corpo .= "\r\n";
+    $corpo .= "<p><strong>Descrição do problema:</strong><br>" . nl2br($mensagem) . "</p>\r\n";
     
     // Processamento das fotos anexadas
     if (!empty($_FILES['imagens']['name'][0])) {
