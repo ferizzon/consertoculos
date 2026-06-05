@@ -185,18 +185,17 @@ a {
     max-width: 680px;
     height: auto;
     min-height: max-content;
-    background: #0d0f12; 
-    background: rgba(10, 10, 12, 0.65);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(5, 5, 5, 0.45); /* Reduzido o tom cinza/azul para um preto transparente profundo, integrando ao fundo do frame */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Borda levemente mais nítida para emular o reflexo do metal fosco */
     padding: 45px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9); /* Sombra mais densa e orgânica */
 }
 
 .side-by-side-wrapper {
@@ -210,12 +209,11 @@ a {
 
 .dual-box {
     flex: 1;
-    background: #0d0f12; 
-    background: rgba(10, 10, 12, 0.35);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8);
+    background: rgba(5, 5, 5, 0.45); /* Uniformizado com a mesma transparência e cor do premium box */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
     padding: 45px;
     border-radius: 16px;
     display: flex;
@@ -558,7 +556,7 @@ p strong { color: #ffffff; }
 @media (max-width: 1024px) {
     .side-by-side-wrapper {
         flex-direction: column;
-        gap: 40px;
+        gap: 20px; /* Alterado de 40px para 20px para manter a consistência visual */
     }
     .dual-box {
         max-width: 680px;
