@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPAuth   = true;                             // Ativa a autenticação
         $mail->Username   = 'contato@consertoculos.com.br';   // Seu e-mail Titan
         $mail->Password   = 'Al@n306090';                     // Sua senha fornecida
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Segurança TLS obrigatória
-        $mail->Port       = 587;                              // Porta padrão para TLS
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      // Altera para SSL
+        $mail->Port       = 465;                           // Porta padrão para TLS
 
         // Parâmetro Crítico HostGator para evitar antispam local
         $mail->Sender = 'contato@consertoculos.com.br';
