@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host       = 'smtp.titan.email';                  // Servidor SMTP oficial da Titan
         $mail->SMTPAuth   = true;                                 // Ativa a autenticação por senha
         $mail->Username   = 'contato@consertoculos.com.br';       // Seu e-mail completo
-        $mail->Password   = 'SUA_SENHA_REAL_DO_EMAIL_AQUI';       // <<< COLOQUE A SENHA DO SEU E-MAIL AQUI
+        $mail->Password   = 'Al@n252308';       // <<< COLOQUE A SENHA DO SEU E-MAIL AQUI
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        // Ativa a criptografia de segurança TLS
         $mail->Port       = 587;                                  // Porta padrão de envio da Titan
 
