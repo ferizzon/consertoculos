@@ -182,6 +182,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initPhotoUploader();
         initFormSubmit();
         initMobileMenu(); 
+        initAnchorLinks(); // ALTERAÇÃO PONTUAL: Inicializa o corretor de sincronia dos links do menu
     }
 
     function initTextAnimations() {
@@ -370,6 +371,27 @@ window.addEventListener('DOMContentLoaded', () => {
                 mainNav.classList.remove('open');
                 menuToggle.classList.remove('active');
                 menuToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    // ALTERAÇÃO PONTUAL: Sistema de Redesenho Forçado para Saltos de Âncora (Menu)
+    function initAnchorLinks() {
+        const links = document.querySelectorAll('a[href^="#"]');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                let checkCount = 0;
+                const maxChecks = 50; // 50 iterações * 16ms = ~800ms de escuta ativa durante a transição
+                
+                const forceScrollRender = setInterval(() => {
+                    ScrollTrigger.update();
+                    render();
+                    checkCount++;
+                    
+                    if (checkCount >= maxChecks) {
+                        clearInterval(forceScrollRender);
+                    }
+                }, 16); // Executa a ~60fps para acompanhar suavemente o movimento do navegador
             });
         });
     }
