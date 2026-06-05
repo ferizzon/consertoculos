@@ -1,5 +1,4 @@
 <?php
-// Ativa a exibição de erros na tela para o teste
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -14,13 +13,16 @@ require 'SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Inicializa a variável para evitar erros de aviso do PHP
+$GLOBALS['smtp_debug'] = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = strip_tags(trim($_POST["nome"]));
     $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
     $whatsapp = strip_tags(trim($_POST["whatsapp"]));
     $mensagem = strip_tags(trim($_POST["mensagem"]));
     
-    if (empty($nome) || empty($email) || empty($whatsapp) || empty("mensagem")) {
+    if (empty($nome) || empty($email) || empty($whatsapp) || empty($mensagem)) {
         http_response_code(400);
         echo json_encode(["error" => "Por favor, preencha todos os campos obrigatórios."]);
         exit;
@@ -29,20 +31,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // ==========================================
-        // ATIVANDO O DEBUG PARA VER O ERRO REAL
-        // ==========================================
-        $mail->SMTPDebug = 2; // Mostra o log completo da conversa com o servidor
+        // Captura o log de resposta do servidor de e-mail
+        $mail->SMTPDebug = 2; 
         $mail->Debugoutput = function($str, $level) {
-            // Guarda o log para enviar na resposta
-            GLOBALS['smtp_debug'] .= $str . "\n";
+            $GLOBALS['smtp_debug'] .= $str . "\n";
         };
 
         $mail->isSMTP();                                      
         $mail->Host       = 'smtp.titan.email';               
         $mail->SMTPAuth   = true;                             
         $mail->Username   = 'contato@consertoculos.com.br';   
-        $mail->Password   = 'Al@n2523306090'; // ⚠️ Se mudou a senha, coloque a nova aqui.
+        $mail->Password   = 'Al@n306090'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      
         $mail->Port       = 465;                              
 
@@ -77,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } catch (Exception $e) {
         http_response_code(500);
-        // Retorna o erro padrão + o log detalhado do SMTP
         echo json_encode([
             "error" => "Falha no envio do formulário: {$mail->ErrorInfo}",
             "log_detalhado" => $GLOBALS['smtp_debug']
