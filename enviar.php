@@ -14,15 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $para = "rizzon.fil@gmail.com";
-    $assunto = "Nova Solicitacao de Reparo - Consertoculos";
+    $para = "contato@consertoculos.com.br"; // Destino real
+    $assunto = "🔬 Nova Solicitação de Reparo - Consertóculos";
     
-    // Configuração do delimitador do e-mail com anexos
     $boundary = md5(time());
     
-    // Cabeçalhos do e-mail padronizados para o Gmail aceitar
+    // Cabeçalhos oficiais e limpos
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "From: Consertoculos Lab <alante87@alanteixeiralopes1780672994593.2101853.meusitehostgator.com.br>\r\n";
+    $headers .= "From: Consertóculos Lab <contato@consertoculos.com.br>\r\n"; // Remetente real
     $headers .= "Reply-To: $email\r\n";
     $headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
     
