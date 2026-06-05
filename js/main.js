@@ -313,21 +313,24 @@ window.addEventListener('DOMContentLoaded', () => {
             const submitBtn = form.querySelector('.form-submit');
             const originalBtnText = submitBtn.textContent;
             
+            // Monta o FormData manualmente para bater com as variáveis do PHP
             const formData = new FormData();
             formData.append('nome', document.getElementById('form-nome').value);
             formData.append('email', document.getElementById('form-email').value);
             formData.append('whatsapp', document.getElementById('form-tel').value);
             formData.append('mensagem', document.getElementById('form-mensagem').value);
 
+            // Injeta as imagens gerenciadas no seu array dinâmico
             arquivosSelecionados.forEach(item => {
-                formData.append('imagens', item.fileData);
+                formData.append('imagens[]', item.fileData);
             });
 
             try {
                 submitBtn.textContent = 'Enviando com segurança...';
                 submitBtn.disabled = true;
 
-                const response = await fetch('http://localhost:3000/api/contato', {
+                // Aponta para o arquivo PHP que estará na mesma pasta do servidor
+                const response = await fetch('enviar.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -345,7 +348,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error('Erro na conexão:', error);
-                alert('⚠️ O servidor de segurança laboratorial está offline. Inicialize o seu server.js no terminal.');
+                alert('⚠️ Ocorreu uma falha ao conectar com o servidor. Verifique sua conexão.');
             } finally {
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
