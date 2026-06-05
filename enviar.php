@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host       = 'smtp.titan.email';               
         $mail->SMTPAuth   = true;                             
         $mail->Username   = 'contato@consertoculos.com.br';   
-        $mail->Password   = 'Al@n306090';                     
+        $mail->Password   = 'Al@n2523306090';                     
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      // SSL Ativo (Porta 465)
         $mail->Port       = 465;                              
 
