@@ -25,20 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // Configurações oficiais de conexão Titan/HostGator
-        $mail->isSMTP();
-        $mail->Host       = 'mail.consertoculos.com.br';         // <<< ALTERADO: Rota de correspondência do seu domínio
-        $mail->SMTPAuth   = true;                                 
-        $mail->Username   = 'contato@consertoculos.com.br';       
-        $mail->Password   = 'Al@n252308';                    // <<< A senha que você usa para entrar no mail.titan.email
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         // <<< ALTERADO: Ativa segurança SSL para a porta 465
-        $mail->Port       = 465;                                 // <<< ALTERADO: Porta de alta segurança que o firewall libera                               // Porta padrão de envio da Titan
+        // Configuração Nativa Localizada (Pula o bloqueio de firewall e SMTP da HostGator)
+        $mail->isMail();                                         // Usa o motor de envio local do próprio servidor Linux
 
         // Configuração de Remetente e Destinatário
         $mail->setFrom('contato@consertoculos.com.br', 'Consertóculos Lab');
-        $mail->addAddress('contato@consertoculos.com.br');        // O site envia para você mesmo
-        $mail->addAddress('rizzon.fil@gmail.com');                // Cópia oculta/adicional para o seu Gmail (Segurança)
-        $mail->addReplyTo($email, $nome);                         // Se você responder, vai para o e-mail do cliente
+        $mail->addAddress('contato@consertoculos.com.br');        // Envia para a sua caixa profissional Titan
+        $mail->addAddress('rizzon.fil@gmail.com');                // Envia a cópia de segurança para o seu Gmail
+        $mail->addReplyTo($email, $nome);                         // Se você responder, vai direto para o cliente
 
         // Processa e anexa as fotos dinamicamente
         if (!empty($_FILES['imagens']['name'][0])) {
