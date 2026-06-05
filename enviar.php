@@ -24,33 +24,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // ==========================================
-        // CONFIGURAÇÃO DO SERVIDOR SMTP (BLINDADO)
-        // ==========================================
+        // CONFIGURAÇÃO DO SERVIDOR SMTP DO TITAN
         $mail->isSMTP();                                      
         $mail->Host       = 'smtp.titan.email';               
         $mail->SMTPAuth   = true;                             
         $mail->Username   = 'contato@consertoculos.com.br';   
         $mail->Password   = 'Al@n306090';                     
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      // Forçando SSL (Porta 465)
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      // SSL Ativo (Porta 465)
         $mail->Port       = 465;                              
-
-        // O SEGREDO: Ignorar a verificação de SSL interna do servidor HostGator
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            )
-        );
 
         $mail->Sender = 'contato@consertoculos.com.br';
 
-        // Configuração de Remetente e Destinatário
+        // REGRAS DE ENVIO (Apenas para o seu e-mail corporativo)
         $mail->setFrom('contato@consertoculos.com.br', 'Consertóculos Lab');
-        $mail->addAddress('contato@consertoculos.com.br');        
-        $mail->addAddress('rizzon.fil@gmail.com');                
-        $mail->addReplyTo($email, $nome);                         
+        $mail->addAddress('contato@consertoculos.com.br'); // Destinatário Único
+        $mail->addReplyTo($email, $nome);                  // Se você responder o e-mail, vai para o cliente
 
         // Processa e anexa as fotos dinamicamente
         if (!empty($_FILES['imagens']['name'][0])) {
@@ -75,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->send();
         
         http_response_code(200);
-        echo json_encode(["message" => "Solicitação enviada com sucesso! Nossa equipe analisará as imagens."]);
+        echo json_encode(["message" => "Solicitação enviada com sucesso! Nossos engenheiros analisarão as imagens."]);
 
     } catch (Exception $e) {
         http_response_code(500);
