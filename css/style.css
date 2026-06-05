@@ -385,7 +385,7 @@ a {
 /* ==========================================================================
    6.1 GERENCIADOR VISUAL DE MINIATURAS (FOTOS DO FORMULÁRIO)
    ========================================================================== */
-.file-preview-container {
+#file-preview-container {
     display: flex;
     gap: 10px;
     margin-top: 15px;
