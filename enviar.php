@@ -1,4 +1,9 @@
 <?php
+// Ativa a exibição de erros na tela para o teste
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -15,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $whatsapp = strip_tags(trim($_POST["whatsapp"]));
     $mensagem = strip_tags(trim($_POST["mensagem"]));
     
-    if (empty($nome) || empty($email) || empty($whatsapp) || empty($mensagem)) {
+    if (empty($nome) || empty($email) || empty($whatsapp) || empty("mensagem")) {
         http_response_code(400);
         echo json_encode(["error" => "Por favor, preencha todos os campos obrigatórios."]);
         exit;
@@ -24,23 +29,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // CONFIGURAÇÃO DO SERVIDOR SMTP DO TITAN
+        // ==========================================
+        // ATIVANDO O DEBUG PARA VER O ERRO REAL
+        // ==========================================
+        $mail->SMTPDebug = 2; // Mostra o log completo da conversa com o servidor
+        $mail->Debugoutput = function($str, $level) {
+            // Guarda o log para enviar na resposta
+            GLOBALS['smtp_debug'] .= $str . "\n";
+        };
+
         $mail->isSMTP();                                      
         $mail->Host       = 'smtp.titan.email';               
         $mail->SMTPAuth   = true;                             
         $mail->Username   = 'contato@consertoculos.com.br';   
-        $mail->Password   = 'Al@n2523306090';                     
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      // SSL Ativo (Porta 465)
+        $mail->Password   = 'Al@n2523306090'; // ⚠️ Se mudou a senha, coloque a nova aqui.
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      
         $mail->Port       = 465;                              
 
         $mail->Sender = 'contato@consertoculos.com.br';
 
-        // REGRAS DE ENVIO (Apenas para o seu e-mail corporativo)
         $mail->setFrom('contato@consertoculos.com.br', 'Consertóculos Lab');
-        $mail->addAddress('contato@consertoculos.com.br'); // Destinatário Único
-        $mail->addReplyTo($email, $nome);                  // Se você responder o e-mail, vai para o cliente
+        $mail->addAddress('contato@consertoculos.com.br');        
+        $mail->addReplyTo($email, $nome);                         
 
-        // Processa e anexa as fotos dinamicamente
         if (!empty($_FILES['imagens']['name'][0])) {
             foreach ($_FILES['imagens']['tmp_name'] as $index => $tmpName) {
                 if ($_FILES['imagens']['error'][$index] == UPLOAD_ERR_OK) {
@@ -49,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Construção do layout do e-mail em HTML
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
         $mail->Subject = '🔬 Nova Solicitação de Reparo - Consertóculos';
@@ -63,11 +73,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->send();
         
         http_response_code(200);
-        echo json_encode(["message" => "Solicitação enviada com sucesso! Nossos engenheiros analisarão as imagens."]);
+        echo json_encode(["message" => "Enviado com sucesso!"]);
 
     } catch (Exception $e) {
         http_response_code(500);
-        echo json_encode(["error" => "Falha no envio do formulário: {$mail->ErrorInfo}"]);
+        // Retorna o erro padrão + o log detalhado do SMTP
+        echo json_encode([
+            "error" => "Falha no envio do formulário: {$mail->ErrorInfo}",
+            "log_detalhado" => $GLOBALS['smtp_debug']
+        ]);
     }
 } else {
     http_response_code(405);
