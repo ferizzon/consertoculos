@@ -170,7 +170,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                // OTIMIZAÇÃO: Alterado de 0.8 para 0.2 no mobile para dar resposta responsiva e fluida ao toque
                 scrub: cachedWidth <= 768 ? 0.2 : 0.5, 
                 onUpdate: render 
             }
@@ -183,7 +182,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initFormSubmit();
         initMobileMenu(); 
         initAnchorLinks(); 
-        initContactModal(); // INICIALIZAÇÃO: Sistema controlador da abertura do modal de orçamentos
+        initContactModal(); // Ativação cirúrgica do sistema de escuta do Modal
     }
 
     function initTextAnimations() {
@@ -228,17 +227,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     panel.style.maxHeight = panel.scrollHeight + "px";
                 }
                 
-                if (window.innerWidth <= 768) {
-                    setTimeout(() => {
-                        setVideoHeight();
-                        ScrollTrigger.refresh();
-                    }, 400);
-                } else {
-                    setTimeout(() => {
-                        setVideoHeight();
-                        ScrollTrigger.refresh();
-                    }, 400);
-                }
+                setTimeout(() => {
+                    setVideoHeight();
+                    ScrollTrigger.refresh();
+                }, 400);
             });
         });
     }
@@ -348,7 +340,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     arquivosSelecionados = [];
                     document.getElementById('file-preview-container').innerHTML = '';
                     
-                    // Fecha o modal suavemente após o envio bem-sucedido
                     const modal = document.getElementById('contact-modal');
                     if (modal) {
                         modal.classList.remove('active');
@@ -410,20 +401,22 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // MANIPULADOR INTERATIVO DO MODAL DE ORÇAMENTO (Item 1)
-    function initContactContactModal() {
+    // MANIPULADOR DO MODAL DE ORÇAMENTO (Nomes sincronizados perfeitamente)
+    function initContactModal() {
         const fab = document.getElementById('fab-contact');
         const modal = document.getElementById('contact-modal');
         const closeBtn = document.querySelector('.modal-close');
 
         if (!fab || !modal || !closeBtn) return;
 
-        fab.addEventListener('click', () => {
+        fab.addEventListener('click', (e) => {
+            e.preventDefault();
             modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
         });
 
-        closeBtn.addEventListener('click', () => {
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
         });

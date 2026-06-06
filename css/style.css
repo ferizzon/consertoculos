@@ -178,17 +178,17 @@ a {
 }
 
 /* ==========================================================================
-   4. QUADROS PREMIUM E CONTROLE DE TRANSPARÊNCIA (Otimizados via Titânio Frame Lab)
+   4. QUADROS PREMIUM E TRANSPARÊNCIA (Otimizados com base no Frame Titânio)
    ========================================================================== */
 .content-box-premium {
     width: 100%;
     max-width: 680px;
     height: auto;
     min-height: max-content;
-    background: rgba(10, 10, 12, 0.58); /* OTIMIZADO: Tom grafite escuro translúcido premium em harmonia com a fumaça de fundo */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12); /* OTIMIZADO: Linha fina reflexiva simulando o chanfro do metal jateado */
+    background: rgba(10, 10, 12, 0.62); /* Ajustado milimetricamente para fundir-se ao frame cinza/grafite */
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.13); /* Linha metálica suave que emula reflexos reflexivos e limpos */
     padding: 45px;
     border-radius: 16px;
     display: flex;
@@ -209,10 +209,10 @@ a {
 
 .dual-box {
     flex: 1;
-    background: rgba(10, 10, 12, 0.58); /* OTIMIZADO: Consistência visual absoluta com as caixas premium */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(10, 10, 12, 0.62); 
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.13);
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95);
     padding: 45px;
     border-radius: 16px;
@@ -222,6 +222,10 @@ a {
     text-align: left;
     max-width: none;
     margin: 0;
+}
+
+.desktop-align-box {
+    border-left: 3px solid #f59e0b !important; /* Destaque laranja no canto esquerdo da box de contato */
 }
 
 .content-box-premium.central, .dual-box.central {
@@ -249,59 +253,68 @@ a {
 }
 
 /* ==========================================================================
-   4.1 RENDERIZADOR DOS CANAIS WHATSAPP (Laranja de Destaque Técnico)
+   4.1 RENDERIZADOR DOS LINKS DO WHATSAPP (Simetria Desktop Otimizada)
    ========================================================================== */
 .whatsapp-links-container {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 1fr; /* Desenha em lista vertical para parear exatamente com o tamanho dos cards de unidade vizinhos */
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .whatsapp-branch-link {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    padding: 16px 22px;
-    background: rgba(245, 158, 11, 0.03);
-    border: 1px solid rgba(245, 158, 11, 0.35);
-    color: #ffffff;
+    padding: 23px 25px;
+    background: rgba(245, 158, 11, 0.02);
+    border: 1px solid rgba(245, 158, 11, 0.3);
     border-radius: 8px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    cursor: pointer;
 }
 
-.whatsapp-branch-link svg {
-    color: #f59e0b;
-    transition: transform 0.3s ease;
+.whatsapp-branch-link .link-headline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.whatsapp-branch-link .link-subtext {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: #f59e0b; /* Laranja ativo nos subtextos explicativos */
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
 }
 
 .whatsapp-branch-link:hover {
-    background: rgba(245, 158, 11, 0.12);
+    background: rgba(245, 158, 11, 0.08);
     border-color: #f59e0b;
-    color: #fbbf24;
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
     transform: translateY(-2px);
 }
 
-.whatsapp-branch-link:hover svg {
-    transform: scale(1.15);
+.whatsapp-branch-link:hover .link-headline {
+    color: #fbbf24;
 }
 
 /* ==========================================================================
-   4.2 COMPONENTE FLOATING ACTION BUTTON (FAB) E MODAL OVERLAY
+   4.2 FLOATING ACTION BUTTON (FAB) E MODAL RESPONSIVO (Z-index Supremo)
    ========================================================================== */
 #fab-contact {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
+    bottom: 35px;
+    right: 35px;
+    width: 65px;
+    height: 65px;
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     border: none;
     border-radius: 50%;
@@ -310,25 +323,25 @@ a {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 95;
-    box-shadow: 0 6px 30px rgba(5, 150, 105, 0.45);
+    z-index: 150;
+    box-shadow: 0 8px 35px rgba(5, 150, 105, 0.5);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
 }
 
 #fab-contact:hover {
-    transform: scale(1.08) translateY(-3px);
-    box-shadow: 0 10px 35px rgba(5, 150, 105, 0.65);
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 12px 40px rgba(5, 150, 105, 0.7);
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 .fab-tooltip {
     position: absolute;
-    right: 75px;
-    background: rgba(10, 10, 12, 0.9);
+    right: 80px;
+    background: rgba(10, 10, 12, 0.95);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #ffffff;
-    padding: 8px 16px;
+    padding: 10px 18px;
     border-radius: 6px;
     font-family: 'Orbitron', sans-serif;
     font-size: 0.75rem;
@@ -338,6 +351,7 @@ a {
     transform: translateX(12px);
     transition: opacity 0.3s, transform 0.3s;
     pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 #fab-contact:hover .fab-tooltip {
@@ -351,10 +365,10 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.82);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    z-index: 200;
+    z-index: 300; /* Sobrepõe absolutamente tudo na página */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -370,11 +384,11 @@ a {
 }
 
 .modal-wrapper {
-    background: rgba(8, 8, 10, 0.96);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.95);
+    background: rgba(10, 10, 12, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 50px 110px rgba(0, 0, 0, 0.95);
     width: 100%;
-    max-width: 620px;
+    max-width: 640px;
     max-height: 90vh;
     overflow-y: auto;
     border-radius: 16px;
@@ -390,7 +404,7 @@ a {
 
 .modal-close {
     position: absolute;
-    top: 20px;
+    top: 25px;
     right: 25px;
     background: none;
     border: none;
@@ -724,21 +738,20 @@ p strong { color: #ffffff; }
 }
 
 @media (max-width: 768px) {
-    /* CORREÇÃO DE DISTÂNCIA DAS SEÇÕES (Item 3): Cria espaçamento idêntico ao ritmo do site para os blocos empilhados */
+    /* RITMO UNIFORME DE SEÇÕES MOBILE (Item 3): Força o gap a se comportar como o restante do site */
     .side-by-side-wrapper {
         gap: 140px !important; 
     }
 
-    /* Ajuste de margem interna do modal em dispositivos móveis */
     .modal-wrapper {
-        padding: 30px 20px;
+        padding: 35px 20px;
     }
 
     #fab-contact {
-        bottom: 20px;
-        right: 20px;
-        width: 54px;
-        height: 54px;
+        bottom: 25px;
+        right: 25px;
+        width: 58px;
+        height: 58px;
     }
 
     #scrollytelling-container {
