@@ -185,10 +185,10 @@ a {
     max-width: 680px;
     height: auto;
     min-height: max-content;
-    background: rgba(10, 10, 12, 0.62); /* Ajustado milimetricamente para fundir-se ao frame cinza/grafite */
+    background: rgba(10, 10, 12, 0.62); 
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.13); /* Linha metálica suave que emula reflexos reflexivos e limpos */
+    border: 1px solid rgba(255, 255, 255, 0.13); 
     padding: 45px;
     border-radius: 16px;
     display: flex;
@@ -225,7 +225,7 @@ a {
 }
 
 .desktop-align-box {
-    border-left: 3px solid #f59e0b !important; /* Destaque laranja no canto esquerdo da box de contato */
+    border-left: 3px solid #f59e0b !important; 
 }
 
 .content-box-premium.central, .dual-box.central {
@@ -253,85 +253,96 @@ a {
 }
 
 /* ==========================================================================
-   4.1 RENDERIZADOR DOS LINKS DO WHATSAPP (Simetria Desktop Otimizada)
+   4.1 RENDERIZADOR DOS LINKS DO WHATSAPP (Correção de Estilização Absoluta Desktop)
    ========================================================================== */
 .whatsapp-links-container {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr; /* Desenha em lista vertical para parear exatamente com o tamanho dos cards de unidade vizinhos */
-    gap: 20px;
+    grid-template-columns: 1fr; 
+    gap: 16px;
     margin-top: 30px;
 }
 
 .whatsapp-branch-link {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    padding: 23px 25px;
-    background: rgba(245, 158, 11, 0.02);
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    border-radius: 8px;
-    cursor: pointer;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    padding: 22px 25px !important;
+    background: rgba(15, 11, 8, 0.7) !important; /* Fundo escuro aquecido para dar contraste e anular transparência invisível */
+    border: 1px solid rgba(245, 158, 11, 0.45) !important; /* Borda laranja técnica industrial bem definida */
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .whatsapp-branch-link .link-headline {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important; /* Força cor branca nas fontes do desktop */
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
 }
 
 .whatsapp-branch-link .link-subtext {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    color: #f59e0b; /* Laranja ativo nos subtextos explicativos */
-    margin-top: 4px;
-    letter-spacing: 0.5px;
-    font-weight: 500;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.8rem !important;
+    color: #f59e0b !important; /* Força tom âmbar de ação nos subtextos */
+    margin-top: 4px !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 600 !important;
 }
 
 .whatsapp-branch-link:hover {
-    background: rgba(245, 158, 11, 0.08);
-    border-color: #f59e0b;
-    box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
-    transform: translateY(-2px);
+    background: rgba(245, 158, 11, 0.12) !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.35) !important;
+    transform: translateY(-2px) !important;
 }
 
 .whatsapp-branch-link:hover .link-headline {
-    color: #fbbf24;
+    color: #fbbf24 !important;
 }
 
 /* ==========================================================================
-   4.2 FLOATING ACTION BUTTON (FAB) E MODAL RESPONSIVO (Z-index Supremo)
+   4.2 FLOATING ACTION BUTTON (FAB) E MODAL RESPONSIVO (Correção de Visibilidade Desktop)
    ========================================================================== */
 #fab-contact {
-    position: fixed;
-    bottom: 35px;
-    right: 35px;
-    width: 65px;
-    height: 65px;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    border: none;
-    border-radius: 50%;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 150;
-    box-shadow: 0 8px 35px rgba(5, 150, 105, 0.5);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+    position: fixed !important; /* Força o comportamento flutuante fixo na tela */
+    bottom: 35px !important;
+    right: 35px !important;
+    width: 65px !important;
+    height: 65px !important;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    display: flex !important; /* Garante que o contêiner não colapse e exiba o ícone centralizado */
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 160 !important; /* Z-index supremo para ficar acima das camadas de conteúdo e do canvas */
+    box-shadow: 0 8px 35px rgba(5, 150, 105, 0.5) !important;
+    opacity: 1 !important; /* Previne ocultação por heranças de opacidade do GSAP */
+    visibility: visible !important;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s !important;
+}
+
+#fab-contact svg.fab-icon {
+    width: 26px !important;
+    height: 26px !important;
+    color: #ffffff !important;
+    fill: currentColor !important;
+    display: block !important;
 }
 
 #fab-contact:hover {
-    transform: scale(1.08) translateY(-4px);
-    box-shadow: 0 12px 40px rgba(5, 150, 105, 0.7);
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    transform: scale(1.08) translateY(-4px) !important;
+    box-shadow: 0 12px 40px rgba(5, 150, 105, 0.7) !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
 }
 
 .fab-tooltip {
@@ -368,7 +379,7 @@ a {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    z-index: 300; /* Sobrepõe absolutamente tudo na página */
+    z-index: 300; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -738,7 +749,6 @@ p strong { color: #ffffff; }
 }
 
 @media (max-width: 768px) {
-    /* RITMO UNIFORME DE SEÇÕES MOBILE (Item 3): Força o gap a se comportar como o restante do site */
     .side-by-side-wrapper {
         gap: 140px !important; 
     }
@@ -748,10 +758,10 @@ p strong { color: #ffffff; }
     }
 
     #fab-contact {
-        bottom: 25px;
-        right: 25px;
-        width: 58px;
-        height: 58px;
+        bottom: 25px !important;
+        right: 25px !important;
+        width: 58px !important;
+        height: 58px !important;
     }
 
     #scrollytelling-container {
