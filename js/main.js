@@ -182,7 +182,8 @@ window.addEventListener('DOMContentLoaded', () => {
         initPhotoUploader();
         initFormSubmit();
         initMobileMenu(); 
-        initAnchorLinks(); // ALTERAÇÃO PONTUAL: Inicializa o corretor de sincronia dos links do menu
+        initAnchorLinks(); 
+        initContactModal(); // INICIALIZAÇÃO: Sistema controlador da abertura do modal de orçamentos
     }
 
     function initTextAnimations() {
@@ -227,10 +228,17 @@ window.addEventListener('DOMContentLoaded', () => {
                     panel.style.maxHeight = panel.scrollHeight + "px";
                 }
                 
-                setTimeout(() => {
-                    setVideoHeight();
-                    ScrollTrigger.refresh();
-                }, 400); 
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        setVideoHeight();
+                        ScrollTrigger.refresh();
+                    }, 400);
+                } else {
+                    setTimeout(() => {
+                        setVideoHeight();
+                        ScrollTrigger.refresh();
+                    }, 400);
+                }
             });
         });
     }
@@ -313,14 +321,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const submitBtn = form.querySelector('.form-submit');
             const originalBtnText = submitBtn.textContent;
             
-            // Monta o FormData manualmente para bater com as variáveis do PHP
             const formData = new FormData();
             formData.append('nome', document.getElementById('form-nome').value);
             formData.append('email', document.getElementById('form-email').value);
             formData.append('whatsapp', document.getElementById('form-tel').value);
             formData.append('mensagem', document.getElementById('form-mensagem').value);
 
-            // Injeta as imagens gerenciadas no seu array dinâmico
             arquivosSelecionados.forEach(item => {
                 formData.append('imagens[]', item.fileData);
             });
@@ -329,7 +335,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 submitBtn.textContent = 'Enviando com segurança...';
                 submitBtn.disabled = true;
 
-                // Aponta para o arquivo PHP que estará na mesma pasta do servidor
                 const response = await fetch('enviar.php', {
                     method: 'POST',
                     body: formData
@@ -342,6 +347,13 @@ window.addEventListener('DOMContentLoaded', () => {
                     form.reset();
                     arquivosSelecionados = [];
                     document.getElementById('file-preview-container').innerHTML = '';
+                    
+                    // Fecha o modal suavemente após o envio bem-sucedido
+                    const modal = document.getElementById('contact-modal');
+                    if (modal) {
+                        modal.classList.remove('active');
+                        modal.setAttribute('aria-hidden', 'true');
+                    }
                 } else {
                     alert('⚠️ Erro: ' + (result.error || 'Erro inesperado do sistema.'));
                 }
@@ -378,13 +390,12 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ALTERAÇÃO PONTUAL: Sistema de Redesenho Forçado para Saltos de Âncora (Menu)
     function initAnchorLinks() {
         const links = document.querySelectorAll('a[href^="#"]');
         links.forEach(link => {
             link.addEventListener('click', () => {
                 let checkCount = 0;
-                const maxChecks = 50; // 50 iterações * 16ms = ~800ms de escuta ativa durante a transição
+                const maxChecks = 50; 
                 
                 const forceScrollRender = setInterval(() => {
                     ScrollTrigger.update();
@@ -394,8 +405,34 @@ window.addEventListener('DOMContentLoaded', () => {
                     if (checkCount >= maxChecks) {
                         clearInterval(forceScrollRender);
                     }
-                }, 16); // Executa a ~60fps para acompanhar suavemente o movimento do navegador
+                }, 16); 
             });
+        });
+    }
+
+    // MANIPULADOR INTERATIVO DO MODAL DE ORÇAMENTO (Item 1)
+    function initContactContactModal() {
+        const fab = document.getElementById('fab-contact');
+        const modal = document.getElementById('contact-modal');
+        const closeBtn = document.querySelector('.modal-close');
+
+        if (!fab || !modal || !closeBtn) return;
+
+        fab.addEventListener('click', () => {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+            }
         });
     }
 

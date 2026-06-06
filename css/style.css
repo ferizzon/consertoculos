@@ -178,24 +178,24 @@ a {
 }
 
 /* ==========================================================================
-   4. QUADROS PREMIUM E CONTROLE DE TRANSPARÊNCIA
+   4. QUADROS PREMIUM E CONTROLE DE TRANSPARÊNCIA (Otimizados via Titânio Frame Lab)
    ========================================================================== */
 .content-box-premium {
     width: 100%;
     max-width: 680px;
     height: auto;
     min-height: max-content;
-    background: rgba(5, 5, 5, 0.45); /* Reduzido o tom cinza/azul para um preto transparente profundo, integrando ao fundo do frame */
+    background: rgba(10, 10, 12, 0.58); /* OTIMIZADO: Tom grafite escuro translúcido premium em harmonia com a fumaça de fundo */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08); /* Borda levemente mais nítida para emular o reflexo do metal fosco */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* OTIMIZADO: Linha fina reflexiva simulando o chanfro do metal jateado */
     padding: 45px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9); /* Sombra mais densa e orgânica */
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95); 
 }
 
 .side-by-side-wrapper {
@@ -209,11 +209,11 @@ a {
 
 .dual-box {
     flex: 1;
-    background: rgba(5, 5, 5, 0.45); /* Uniformizado com a mesma transparência e cor do premium box */
+    background: rgba(10, 10, 12, 0.58); /* OTIMIZADO: Consistência visual absoluta com as caixas premium */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95);
     padding: 45px;
     border-radius: 16px;
     display: flex;
@@ -246,6 +246,164 @@ a {
 .seal-box {
     border-top: 3px solid #10b981 !important;
     padding: 100px 6% !important; 
+}
+
+/* ==========================================================================
+   4.1 RENDERIZADOR DOS CANAIS WHATSAPP (Laranja de Destaque Técnico)
+   ========================================================================== */
+.whatsapp-links-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 25px;
+}
+
+.whatsapp-branch-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 22px;
+    background: rgba(245, 158, 11, 0.03);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #ffffff;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.whatsapp-branch-link svg {
+    color: #f59e0b;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-branch-link:hover {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: #f59e0b;
+    color: #fbbf24;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+    transform: translateY(-2px);
+}
+
+.whatsapp-branch-link:hover svg {
+    transform: scale(1.15);
+}
+
+/* ==========================================================================
+   4.2 COMPONENTE FLOATING ACTION BUTTON (FAB) E MODAL OVERLAY
+   ========================================================================== */
+#fab-contact {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 95;
+    box-shadow: 0 6px 30px rgba(5, 150, 105, 0.45);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+}
+
+#fab-contact:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 10px 35px rgba(5, 150, 105, 0.65);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.fab-tooltip {
+    position: absolute;
+    right: 75px;
+    background: rgba(10, 10, 12, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(12px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+
+#fab-contact:hover .fab-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 24px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-wrapper {
+    background: rgba(8, 8, 10, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.95);
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 45px;
+    position: relative;
+    transform: translateY(40px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-wrapper {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 2.2rem;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #ef4444;
+    transform: rotate(90deg);
 }
 
 /* ==========================================================================
@@ -344,7 +502,7 @@ a {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .form-group {
@@ -556,7 +714,7 @@ p strong { color: #ffffff; }
 @media (max-width: 1024px) {
     .side-by-side-wrapper {
         flex-direction: column;
-        gap: 20px; /* Alterado de 40px para 20px para manter a consistência visual */
+        gap: 40px; 
     }
     .dual-box {
         max-width: 680px;
@@ -566,7 +724,23 @@ p strong { color: #ffffff; }
 }
 
 @media (max-width: 768px) {
-    /* CORREÇÃO DO VÁCUO PRETO: Sangria visual que cobre o movimento do navegador */
+    /* CORREÇÃO DE DISTÂNCIA DAS SEÇÕES (Item 3): Cria espaçamento idêntico ao ritmo do site para os blocos empilhados */
+    .side-by-side-wrapper {
+        gap: 140px !important; 
+    }
+
+    /* Ajuste de margem interna do modal em dispositivos móveis */
+    .modal-wrapper {
+        padding: 30px 20px;
+    }
+
+    #fab-contact {
+        bottom: 20px;
+        right: 20px;
+        width: 54px;
+        height: 54px;
+    }
+
     #scrollytelling-container {
         height: 115vh !important;
         bottom: -15vh;
