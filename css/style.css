@@ -252,6 +252,14 @@ a {
     padding: 100px 6% !important; 
 }
 
+#section-hero .content-box-premium {
+    border-bottom: 3px solid #10b981 !important;
+}
+
+#section-unidades .side-by-side-wrapper > .dual-box:first-child {
+    border-right: 3px solid #10b981 !important;
+}
+
 /* Painel de balanceamento de layout desktop */
 .contact-specs-panel {
     width: 100%;
