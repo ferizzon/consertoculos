@@ -20,41 +20,44 @@ window.addEventListener('DOMContentLoaded', () => {
     );
 
     const canvas = document.getElementById("animation-canvas");
+    if (!canvas) return; // Guard clause de segurança
+    
     const context = canvas.getContext("2d");
     const airframes = { frame: 0 };
     const images = [];
     
     let videoScrollMax = 1000; 
     let isInitialRendered = false;
-    let lastValidFrameIndex = 0; // Evita telas pretas sustentando o último frame processado
-    let lastWidth = window.innerWidth; // Isola o resize do mobile contra oscilações de barras nativas
+    let lastValidFrameIndex = 0; 
+    let lastWidth = window.innerWidth; 
     let resizeTimeout;
 
-    // OTIMIZAÇÃO CRÍTICA: Variáveis de cache para eliminar Layout Thrashing (Reflow) no loop do render
+    // Variáveis de cache para eliminar Layout Thrashing (Reflow) no loop do render
     let cachedWidth = window.innerWidth;
     let cachedHeight = window.innerHeight;
 
     // Array estruturada para armazenar os arquivos e seus IDs únicos de controle
     let arquivosSelecionados = [];
 
-    // OTIMIZAÇÃO: Define dimensões estruturais estendidas no mobile para absorver trancos de scroll
+    // OTIMIZAÇÃO: Define dimensões estruturais estendidas no mobile para absorver trancos de barras nativas
     function resizeCanvas() {
         cachedWidth = window.innerWidth;
         const isMobile = cachedWidth <= 768;
         cachedHeight = isMobile ? window.innerHeight * 1.15 : window.innerHeight;
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2); // Capado em 2x para evitar sobrecarga de GPU em telas Retina extremas
 
         canvas.style.width = cachedWidth + "px";
         canvas.style.height = (isMobile ? window.innerHeight * 1.15 : window.innerHeight) + "px";
         canvas.width = cachedWidth * dpr;
         canvas.height = cachedHeight * dpr;
 
+        context.setTransform(1, 0, 0, 1, 0, 0); // Reseta a matriz de transformação antes de escalar
         context.scale(dpr, dpr);
     }
 
-    // SISTEMA DE PRELOAD COM DECODE ANTECIPADO: Libera a GPU antes do primeiro toque na tela
+    // SISTEMA DE PRELOAD COM DECODE ANTECIPADO EM SEGUNDO PLANO
     function preloadImages() {
-        const initialBatch = 30; 
+        const initialBatch = 30; // Bloco crítico para renderização imediata (LCP rápido)
         let loadedInitial = 0;
 
         for (let i = 0; i < frameCount; i++) {
@@ -78,6 +81,9 @@ window.addEventListener('DOMContentLoaded', () => {
                                 initScrollAnimation();
                             }
                         });
+                } else {
+                    // Decodifica o restante de forma assíncrona sem travar a thread principal
+                    img.decode().catch(() => {});
                 }
             };
             images.push(img);
@@ -96,10 +102,9 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!img || !img.complete) return; 
 
         lastValidFrameIndex = currentFrameIndex;
-
-        // OTIMIZAÇÃO: Lendo valores cacheados em vez de bater na API nativa do window (Performance Absoluta)
         const isMobile = cachedWidth <= 768;
 
+        context.clearRect(0, 0, cachedWidth, cachedHeight); // Limpa o buffer anterior prevenindo ghosting aritmético
         context.save();
 
         if (isMobile) {
@@ -138,20 +143,19 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Ouvinte de Redimensionamento Inteligente (Ignora trancos das barras de navegação do mobile)
+    // Ouvinte de Redimensionamento Inteligente (Debounced)
     window.addEventListener("resize", () => {
         const currentWidth = window.innerWidth;
-        
         if (currentWidth === lastWidth && currentWidth <= 768) return;
         
         lastWidth = currentWidth;
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             resizeCanvas(); 
-            render();
             setVideoHeight();
+            render();
             ScrollTrigger.refresh();
-        }, 100);
+        }, 150);
     });
 
     function initScrollAnimation() {
@@ -162,7 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(setVideoHeight, 500); 
         render();
 
-        // CONTROLE DO CANVAS POR SCROLLTRIGGER - ALINHAMENTO ORIGINAL PERFEITO
+        // CONTROLE DO CANVAS POR SCROLLTRIGGER
         gsap.to(airframes, {
             frame: frameCount - 1,
             ease: "none",
@@ -170,7 +174,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 trigger: "#video-track",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: cachedWidth <= 768 ? 0.2 : 0.5, 
+                scrub: cachedWidth <= 768 ? 0.1 : 0.3, // Scrub ligeiramente mais reativo para otimizar o INP
                 onUpdate: render 
             }
         });
@@ -182,7 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initFormSubmit();
         initMobileMenu(); 
         initAnchorLinks(); 
-        initContactModal(); // Ativação cirúrgica do sistema de escuta do Modal
+        initContactModal(); 
     }
 
     function initTextAnimations() {
@@ -193,16 +197,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
             targets.forEach((target) => {
                 gsap.fromTo(target,
-                    { opacity: 0, y: 50 },
+                    { opacity: 0, y: 30 }, // Reduzido de 50 para 30 para suavizar o CLS visual
                     {
                         opacity: 1,
                         y: 0,
-                        duration: 0.8,
+                        duration: 0.6,
                         ease: "power2.out",
                         scrollTrigger: {
                             trigger: section,
-                            start: "top 75%",
-                            end: "bottom 25%",
+                            start: "top 80%",
+                            end: "bottom 20%",
                             toggleActions: "play none none reverse", 
                         }
                     }
@@ -217,6 +221,16 @@ window.addEventListener('DOMContentLoaded', () => {
             acc.addEventListener('click', function(e) {
                 e.preventDefault();
                 const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                
+                // Fecha outros accordions abertos (Melhor UX e previne saltos de scroll gigantescos)
+                accordions.forEach(other => {
+                    if (other !== this && other.getAttribute('aria-expanded') === 'true') {
+                        other.setAttribute('aria-expanded', 'false');
+                        other.classList.remove('active');
+                        other.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+
                 this.setAttribute('aria-expanded', !isExpanded);
                 this.classList.toggle('active');
                 const panel = this.nextElementSibling;
@@ -230,7 +244,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     setVideoHeight();
                     ScrollTrigger.refresh();
-                }, 400);
+                }, 300);
             });
         });
     }
@@ -283,8 +297,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     const item = document.createElement('div');
                     item.className = 'preview-item';
                     item.innerHTML = `
-                        <img src="${event.target.result}" alt="Preview">
-                        <button type="button" class="remove-btn" data-id="${uniqueId}">×</button>
+                        <img src="${event.target.result}" alt="Preview do óculos anexado">
+                        <button type="button" class="remove-btn" data-id="${uniqueId}" aria-label="Remover imagem">×</button>
                     `;
                     previewContainer.appendChild(item);
                 };
@@ -338,7 +352,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     alert('🔬 ' + result.message);
                     form.reset();
                     arquivosSelecionados = [];
-                    document.getElementById('file-preview-container').innerHTML = '';
+                    previewContainer.innerHTML = '';
                     
                     const modal = document.getElementById('contact-modal');
                     if (modal) {
@@ -386,7 +400,7 @@ window.addEventListener('DOMContentLoaded', () => {
         links.forEach(link => {
             link.addEventListener('click', () => {
                 let checkCount = 0;
-                const maxChecks = 50; 
+                const maxChecks = 30; 
                 
                 const forceScrollRender = setInterval(() => {
                     ScrollTrigger.update();
@@ -401,7 +415,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // MANIPULADOR DO MODAL DE ORÇAMENTO (Nomes sincronizados perfeitamente)
     function initContactModal() {
         const fab = document.getElementById('fab-contact');
         const modal = document.getElementById('contact-modal');

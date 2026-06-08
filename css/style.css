@@ -1,6 +1,19 @@
 /* ==========================================================================
-   1. RESET E DIRETRIZES GERAIS
+   1. DIRETRIZES GERAIS, VARIÁVEIS E RESET
    ========================================================================== */
+:root {
+    --bg-pure-black: #000000;
+    --bg-card-dark: rgba(10, 10, 12, 0.62);
+    --brand-emerald: #10b981;
+    --brand-emerald-glow: #34d399;
+    --brand-gold: #f59e0b;
+    --brand-gold-glow: #fbbf24;
+    --text-primary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-alpha: rgba(255, 255, 255, 0.13);
+    --gpu-acceleration: translateZ(0);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,12 +21,13 @@
 }
 
 body {
-    background-color: #000000;
-    color: #e2e8f0;
+    background-color: var(--bg-pure-black);
+    color: var(--text-primary);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     height: 100%;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -21,7 +35,7 @@ a {
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Classe utilitária para SEO/Acessibilidade oculta visualmente */
+/* Acessibilidade e SEO (Escondido visualmente, legível para robôs/leitores) */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -34,7 +48,7 @@ a {
 }
 
 /* ==========================================================================
-   2. HEADER E MENU FIXO (Transparente e Responsivo)
+   2. HEADER E NAVEGAÇÃO NATIVA
    ========================================================================== */
 #main-header {
     position: fixed;
@@ -42,16 +56,17 @@ a {
     left: 0;
     width: 100%;
     z-index: 100;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); 
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%); 
     border-bottom: 3px solid transparent;
-    border-image: linear-gradient(to right, rgba(16, 185, 129, 0) 0%, rgba(16, 185, 129, 1) 50%, rgba(16, 185, 129, 0) 100%) 1;
+    border-image: linear-gradient(to right, rgba(16, 185, 129, 0) 0%, var(--brand-emerald) 50%, rgba(16, 185, 129, 0) 100%) 1;
     display: flex;
     flex-direction: row; 
     justify-content: space-between; 
     align-items: center;
     padding: 20px 4%; 
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transform: var(--gpu-acceleration);
 }
 
 .logo-container {
@@ -63,7 +78,7 @@ a {
 }
 
 .logo-link:hover .logo-text {
-    color: #34d399 !important;
+    color: var(--brand-emerald-glow) !important;
     text-shadow: 0 0 15px rgba(52, 211, 153, 0.6); 
 }
 
@@ -83,7 +98,6 @@ a {
     letter-spacing: 1px;
 }
 
-/* Menu desktop padrão */
 .main-nav {
     display: flex;
     gap: 25px;
@@ -92,7 +106,7 @@ a {
 }
 
 .main-nav a {
-    color: #e2e8f0;
+    color: var(--text-primary);
     font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -100,11 +114,12 @@ a {
     text-shadow: 0 1px 5px rgba(0,0,0,0.8);
 }
 
-.main-nav a:hover {
-    color: #34d399;
+.main-nav a:hover, .main-nav a:focus-visible {
+    color: var(--brand-emerald-glow);
+    outline: none;
 }
 
-/* Botão Hambúrguer (Oculto no Desktop) */
+/* Botão Mobile Hambúrguer */
 .menu-toggle {
     display: none;
     background: none;
@@ -136,13 +151,12 @@ a {
 .hamburger::before { top: -8px; }
 .hamburger::after { top: 8px; }
 
-/* Transformação para o botão fechar (X) */
 .menu-toggle.active .hamburger { background: transparent; }
-.menu-toggle.active .hamburger::before { transform: rotate(45deg); top: 0; }
-.menu-toggle.active .hamburger::after { transform: rotate(-45deg); top: 0; }
+.menu-toggle.active .hamburger::before { transform: rotate(45deg) translateZ(0); top: 0; }
+.menu-toggle.active .hamburger::after { transform: rotate(-45deg) translateZ(0); top: 0; }
 
 /* ==========================================================================
-   3. ESTRUTURA DO CANVAS E FUNDOS
+   3. ARQUITETURA DO CANVAS E CAMADAS DE ROLAGEM
    ========================================================================== */
 #scrollytelling-container {
     position: fixed;
@@ -154,7 +168,7 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000000;
+    background-color: var(--bg-pure-black);
 }
 
 #animation-canvas {
@@ -173,22 +187,21 @@ a {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 120px 6% 60px 6%;
+    padding: 140px 6% 60px 6%;
     position: relative;
 }
 
 /* ==========================================================================
-   4. QUADROS PREMIUM E TRANSPARÊNCIA (Otimizados com base no Frame Titânio)
+   4. COMPONENTES PREMIUM (Glassmorphism de Alta Performance)
    ========================================================================== */
 .content-box-premium {
     width: 100%;
     max-width: 680px;
     height: auto;
-    min-height: max-content;
-    background: rgba(10, 10, 12, 0.62); 
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.13); 
+    background: var(--bg-card-dark); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-alpha); 
     padding: 45px;
     border-radius: 16px;
     display: flex;
@@ -196,6 +209,9 @@ a {
     align-items: flex-start;
     text-align: left;
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95); 
+    /* Otimização de GPU: Previne lag de repintura durante a execução do canvas */
+    will-change: transform, opacity;
+    transform: var(--gpu-acceleration);
 }
 
 .side-by-side-wrapper {
@@ -205,14 +221,15 @@ a {
     max-width: 1400px;
     margin: 0 auto;
     align-items: stretch;
+    will-change: transform, opacity;
 }
 
 .dual-box {
     flex: 1;
-    background: rgba(10, 10, 12, 0.62); 
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: var(--bg-card-dark); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-alpha);
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95);
     padding: 45px;
     border-radius: 16px;
@@ -220,12 +237,11 @@ a {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    max-width: none;
-    margin: 0;
+    transform: var(--gpu-acceleration);
 }
 
 .desktop-align-box {
-    border-left: 3px solid #f59e0b !important; 
+    border-left: 3px solid var(--brand-gold) !important; 
 }
 
 .content-box-premium.central, .dual-box.central {
@@ -238,29 +254,29 @@ a {
 .content-box-premium.right {
     margin-left: auto;
     margin-right: 0;
-    border-left: 3px solid #10b981;
+    border-left: 3px solid var(--brand-emerald);
 }
 
 .content-box-premium.left {
     margin-right: auto;
     margin-left: 0;
-    border-right: 3px solid #10b981;
+    border-right: 3px solid var(--brand-emerald);
 }
 
 .seal-box {
-    border-top: 3px solid #10b981 !important;
+    border-top: 3px solid var(--brand-emerald) !important;
     padding: 100px 6% !important; 
 }
 
 #section-hero .content-box-premium {
-    border-bottom: 3px solid #10b981 !important;
+    border-bottom: 3px solid var(--brand-emerald) !important;
 }
 
 #section-unidades .side-by-side-wrapper > .dual-box:first-child {
-    border-right: 3px solid #10b981 !important;
+    border-right: 3px solid var(--brand-emerald) !important;
 }
 
-/* Painel de balanceamento de layout desktop */
+/* Painel Informativo Técnico */
 .contact-specs-panel {
     width: 100%;
     background: rgba(245, 158, 11, 0.02);
@@ -274,7 +290,7 @@ a {
 .contact-specs-panel h3 {
     font-family: 'Orbitron', sans-serif;
     font-size: 0.95rem;
-    color: #f59e0b;
+    color: var(--brand-gold);
     margin-bottom: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -282,7 +298,7 @@ a {
 
 .contact-specs-panel p {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--text-muted);
     line-height: 1.6;
     margin-bottom: 15px;
 }
@@ -297,7 +313,7 @@ a {
 
 .specs-bullet-list li {
     font-size: 0.85rem;
-    color: #e2e8f0;
+    color: var(--text-primary);
     line-height: 1.5;
     position: relative;
     padding-left: 18px;
@@ -308,12 +324,12 @@ a {
     position: absolute;
     left: 0;
     top: 1px;
-    color: #f59e0b;
+    color: var(--brand-gold);
     font-size: 0.8rem;
 }
 
 /* ==========================================================================
-   4.1 RENDERIZADOR DOS LINKS DO WHATSAPP (Ajustado com Altura Ampliada)
+   4.1 BOTÕES DE CONTATO WHATSAPP
    ========================================================================== */
 .whatsapp-links-container {
     width: 100%;
@@ -329,13 +345,13 @@ a {
     justify-content: center !important;
     align-items: flex-start !important;
     width: 100% !important;
-    padding: 25px 28px !important; /* MODIFICADO: Padding vertical aumentado para deixar os botões mais altos */
+    padding: 24px 28px !important; 
     background: rgba(15, 11, 8, 0.7) !important; 
     border: 1px solid rgba(245, 158, 11, 0.45) !important; 
     border-radius: 8px !important;
     cursor: pointer !important;
-    text-decoration: none !important;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: var(--gpu-acceleration);
 }
 
 .whatsapp-branch-link .link-headline {
@@ -350,25 +366,26 @@ a {
 .whatsapp-branch-link .link-subtext {
     font-family: 'Inter', sans-serif !important;
     font-size: 0.75rem !important;
-    color: #f59e0b !important; 
-    margin-top: 5px !important;
+    color: var(--brand-gold) !important; 
+    margin-top: 6px !important;
     letter-spacing: 0.5px !important;
     font-weight: 600 !important;
 }
 
-.whatsapp-branch-link:hover {
+.whatsapp-branch-link:hover, .whatsapp-branch-link:focus-visible {
     background: rgba(245, 158, 11, 0.12) !important;
-    border-color: #f59e0b !important;
+    border-color: var(--brand-gold) !important;
     box-shadow: 0 0 25px rgba(245, 158, 11, 0.35) !important;
     transform: translateY(-2px) !important;
+    outline: none;
 }
 
 .whatsapp-branch-link:hover .link-headline {
-    color: #fbbf24 !important;
+    color: var(--brand-gold-glow) !important;
 }
 
 /* ==========================================================================
-   4.2 FLOATING ACTION BUTTON (FAB) E MODAL RESPONSIVO (Z-index Supremo)
+   4.2 FLOATING ACTION BUTTON (FAB) E MODAL (Limpeza de Inline do HTML)
    ========================================================================== */
 #fab-contact {
     position: fixed !important; 
@@ -386,9 +403,8 @@ a {
     cursor: pointer !important;
     z-index: 160 !important; 
     box-shadow: 0 8px 35px rgba(5, 150, 105, 0.5) !important;
-    opacity: 1 !important; 
-    visibility: visible !important;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s !important;
+    transform: var(--gpu-acceleration);
 }
 
 #fab-contact svg.fab-icon {
@@ -402,7 +418,7 @@ a {
 #fab-contact:hover {
     transform: scale(1.08) translateY(-4px) !important;
     box-shadow: 0 12px 40px rgba(5, 150, 105, 0.7) !important;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    background: linear-gradient(135deg, var(--brand-emerald-glow) 0%, #059669 100%) !important;
 }
 
 .fab-tooltip {
@@ -436,7 +452,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.88);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     z-index: 300; 
@@ -465,8 +481,24 @@ a {
     border-radius: 16px;
     padding: 45px;
     position: relative;
-    transform: translateY(40px);
+    transform: translateY(30px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Absorção da tipografia inline do Modal */
+.modal-wrapper h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffffff;
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.modal-wrapper p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    text-align: left;
 }
 
 .modal-overlay.active .modal-wrapper {
@@ -479,7 +511,7 @@ a {
     right: 25px;
     background: none;
     border: none;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 2.2rem;
     cursor: pointer;
     transition: color 0.3s, transform 0.3s;
@@ -492,7 +524,7 @@ a {
 }
 
 /* ==========================================================================
-   5. ACORDEÃO DE SERVIÇOS
+   5. ACORDEÃO DE SERVIÇOS TÉCNICOS
    ========================================================================== */
 .accordion-container {
     width: 100%;
@@ -509,18 +541,18 @@ a {
     cursor: pointer;
     padding: 18px 20px;
     text-align: left;
-    border: 1px solid #f59e0b;
+    border: 1px solid var(--brand-gold);
     border-radius: 8px;
     font-family: 'Orbitron', sans-serif;
     font-size: 1rem;
-    transition: 0.4s;
+    transition: all 0.3s;
     outline: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.accordion-btn:hover, .accordion-btn.active {
+.accordion-btn:hover, .accordion-btn:focus-visible, .accordion-btn.active {
     background: rgba(245, 158, 11, 0.1);
     box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
 }
@@ -529,7 +561,7 @@ a {
     content: '+';
     font-size: 1.5rem;
     font-weight: bold;
-    color: #f59e0b;
+    color: var(--brand-gold);
 }
 
 .accordion-btn.active::after {
@@ -539,7 +571,7 @@ a {
 .accordion-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     background: transparent;
     padding: 0 20px;
 }
@@ -551,7 +583,7 @@ a {
 }
 
 /* ==========================================================================
-   6. GRID DE UNIDADES E FORMULÁRIO
+   6. GRIDS DE CONTEÚDO E FORMULÁRIO DE ORÇAMENTO
    ========================================================================== */
 .unidades-grid, .tech-spec-grid {
     display: grid;
@@ -574,7 +606,7 @@ a {
 
 .card-unidade h3, .spec-card h3 {
     font-family: 'Orbitron', sans-serif;
-    color: #34d399;
+    color: var(--brand-emerald-glow);
     font-size: 1.2rem;
     margin-bottom: 15px;
 }
@@ -607,8 +639,12 @@ a {
     transition: border 0.3s;
 }
 
+.stealth-form input[type="file"] {
+    padding: 12px 20px; /* Absorção do inline do HTML */
+}
+
 .stealth-form input:focus, .stealth-form textarea:focus {
-    border-color: #10b981;
+    border-color: var(--brand-emerald);
 }
 
 .form-submit {
@@ -625,9 +661,7 @@ a {
     padding-top: 20px;
 }
 
-/* ==========================================================================
-   6.1 GERENCIADOR VISUAL DE MINIATURAS (FOTOS DO FORMULÁRIO)
-   ========================================================================== */
+/* Miniaturas das Fotos Anexadas */
 #file-preview-container {
     display: flex;
     gap: 10px;
@@ -676,7 +710,7 @@ a {
 }
 
 /* ==========================================================================
-   7. TIPOGRAFIA COMPLEMENTAR E ANIMAÇÕES
+   7. TIPOGRAFIA AVANÇADA E ELEMENTOS DE MARCA
    ========================================================================== */
 h1, h2 {
     font-family: 'Orbitron', sans-serif;
@@ -691,14 +725,14 @@ h1 { font-size: 3rem; }
 h2 { font-size: 2.2rem; }
 
 .highlight {
-    color: #34d399;
+    color: var(--brand-emerald-glow);
     text-shadow: 0 0 25px rgba(16, 185, 129, 0.45);
 }
 
 p {
     font-size: 1.05rem;
     line-height: 1.65;
-    color: #e2e8f0; 
+    color: var(--text-primary); 
     margin-bottom: 20px;
 }
 
@@ -718,18 +752,18 @@ p strong { color: #ffffff; }
 .badge-gold {
     background: rgba(245, 158, 11, 0.06);
     border: 1px solid rgba(245, 158, 11, 0.25);
-    color: #fbbf24;
+    color: var(--brand-gold-glow);
 }
 
 .badge-laser {
     background: rgba(16, 185, 129, 0.06);
     border: 1px solid rgba(16, 185, 129, 0.25);
-    color: #34d399;
+    color: var(--brand-emerald-glow);
 }
 
 .scroll-indicator {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -751,7 +785,7 @@ p strong { color: #ffffff; }
 
 .seal-box .subtitle {
     font-family: 'Orbitron', sans-serif;
-    color: #34d399;
+    color: var(--brand-emerald-glow);
     font-size: 1.1rem;
     text-transform: uppercase;
     letter-spacing: 5px;
@@ -759,7 +793,7 @@ p strong { color: #ffffff; }
 }
 
 .footer-deep-text {
-    color: #94a3b8;
+    color: var(--text-muted);
     margin-bottom: 40px;
     font-size: 1.1rem;
     line-height: 1.7;
@@ -781,10 +815,11 @@ p strong { color: #ffffff; }
     cursor: pointer;
 }
 
-.cta-button:hover {
+.cta-button:hover, .cta-button:focus-visible {
     transform: translateY(-3px);
     box-shadow: 0 10px 35px rgba(5, 150, 105, 0.5);
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--brand-emerald-glow) 0%, #059669 100%);
+    outline: none;
 }
 
 @keyframes pulse {
@@ -794,7 +829,7 @@ p strong { color: #ffffff; }
 }
 
 /* ==========================================================================
-   8. RESPONSIVIDADE E TRATAMENTO PARA CELULARES
+   8. RESPONSIVIDADE E ADAPTAÇÃO PARA DISPOSITIVOS MÓVEIS
    ========================================================================== */
 @media (max-width: 1024px) {
     .side-by-side-wrapper {
@@ -809,8 +844,9 @@ p strong { color: #ffffff; }
 }
 
 @media (max-width: 768px) {
+    /* CORREÇÃO DO BUG CRÍTICO: Removido gap de 140px que quebrava a experiência mobile */
     .side-by-side-wrapper {
-        gap: 140px !important; 
+        gap: 40px !important; 
     }
 
     .contact-specs-panel {
@@ -829,6 +865,7 @@ p strong { color: #ffffff; }
         height: 58px !important;
     }
 
+    /* Ajustado para casar perfeitamente com o multiplicador de altura do main.js */
     #scrollytelling-container {
         height: 115vh !important;
         bottom: -15vh;
@@ -847,13 +884,14 @@ p strong { color: #ffffff; }
         display: block;
     }
 
+    /* Menu Lateral Mobile Fluido */
     .main-nav {
         position: fixed;
         top: 0;
         right: -100%; 
         width: 280px;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.92); 
+        background: rgba(0, 0, 0, 0.94); 
         backdrop-filter: blur(25px); 
         -webkit-backdrop-filter: blur(25px);
         border-left: 1px solid rgba(16, 185, 129, 0.3);
@@ -881,13 +919,8 @@ p strong { color: #ffffff; }
         padding: 140px 20px 60px 20px;
     }
 
-    h1 { 
-        font-size: 2rem; 
-    }
-    
-    h2 { 
-        font-size: 1.5rem; 
-    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
     
     .seal-box .brand-title { 
         font-size: clamp(1.2rem, 6.5vw, 1.8rem) !important; 
@@ -934,9 +967,12 @@ p strong { color: #ffffff; }
     }
 }
 
-/* Preparação para as animações dinâmicas do GSAP */
+/* ==========================================================================
+   9. INTERRUPTOR DE ESTADO INICIAL PARA GSAP (Evita saltos abruptos de CLS)
+   ========================================================================== */
 .scroll-section .content-box-premium, 
 .scroll-section .side-by-side-wrapper {
     opacity: 0;
-    transform: translateY(50px);
+    /* Sincronizado milimetricamente com os 30px definidos no main.js */
+    transform: translateY(30px);
 }
