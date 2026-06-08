@@ -352,7 +352,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     alert('🔬 ' + result.message);
                     form.reset();
                     arquivosSelecionados = [];
-                    previewContainer.innerHTML = '';
+                    
+                    // CORREÇÃO AQUI: Buscando o elemento diretamente para evitar o erro de escopo
+                    const previewCont = document.getElementById('file-preview-container');
+                    if (previewCont) previewCont.innerHTML = '';
                     
                     const modal = document.getElementById('contact-modal');
                     if (modal) {
