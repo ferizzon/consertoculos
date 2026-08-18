@@ -449,43 +449,34 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// LÓGICA DO POPUP JUVEVÊ (Isolado)
+// LÓGICA DO AVISO JUVEVÊ
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    const popupJuveve = document.getElementById('popup-juveve');
-    if (!popupJuveve) return;
+    const avisoJuveve = document.getElementById('aviso-expansao-juveve');
+    if (!avisoJuveve) return;
 
-    const btnClose = document.getElementById('fechar-popup-juveve');
-    const btnOk = document.getElementById('btn-ok-popup');
+    const btnClose = document.getElementById('fechar-aviso-juveve');
+    const btnOk = document.getElementById('btn-ok-aviso');
     
-    // Para testar infinitamente, mantenha false.
-    const jaViuPopup = false; 
-    
-    // NOTA PARA PRODUÇÃO: Quando for lançar o site oficial, 
-    // apague a linha acima e use a linha abaixo para o cliente ver só uma vez:
-    // const jaViuPopup = localStorage.getItem('popupJuveveVisto') === 'true';
+    // Teste (manter false)
+    const jaViuAviso = false; 
 
-    if (!jaViuPopup) {
+    if (!jaViuAviso) {
         setTimeout(() => {
-            popupJuveve.classList.add('is-visible');
-            popupJuveve.setAttribute('aria-hidden', 'false');
-        }, 1500); // Aparece suavemente 1.5s após abrir o site
+            avisoJuveve.classList.add('is-visible');
+            avisoJuveve.setAttribute('aria-hidden', 'false');
+        }, 1500); 
     }
 
-    function fecharPopup() {
-        popupJuveve.classList.remove('is-visible');
-        popupJuveve.setAttribute('aria-hidden', 'true');
-        
-        // NOTA PARA PRODUÇÃO: Descomente a linha abaixo para gravar na memória do navegador
-        // localStorage.setItem('popupJuveveVisto', 'true');
+    function fecharAviso() {
+        avisoJuveve.classList.remove('is-visible');
+        avisoJuveve.setAttribute('aria-hidden', 'true');
     }
 
-    // Ações de clique
-    if (btnClose) btnClose.addEventListener('click', fecharPopup);
-    if (btnOk) btnOk.addEventListener('click', fecharPopup);
+    if (btnClose) btnClose.addEventListener('click', fecharAviso);
+    if (btnOk) btnOk.addEventListener('click', fecharAviso);
 
-    // Fechar ao clicar fora (no overlay escuro)
-    popupJuveve.addEventListener('click', (e) => {
-        if (e.target === popupJuveve) fecharPopup();
+    avisoJuveve.addEventListener('click', (e) => {
+        if (e.target === avisoJuveve) fecharAviso();
     });
 });

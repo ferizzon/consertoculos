@@ -978,18 +978,18 @@ p strong { color: #ffffff; }
 }
 
 /* ==========================================
-   POPUP NOVA UNIDADE JUVEVÊ
+   AVISO NOVA UNIDADE JUVEVÊ
    ========================================== */
-.popup-overlay {
+.aviso-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw; 
+    height: 100vh; 
     background: rgba(0, 0, 0, 0.90);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    z-index: 9999;
+    z-index: 999999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -997,14 +997,15 @@ p strong { color: #ffffff; }
     pointer-events: none;
     transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     padding: 24px;
+    box-sizing: border-box;
 }
 
-.popup-overlay.is-visible {
+.aviso-overlay.is-visible {
     opacity: 1;
     pointer-events: auto;
 }
 
-.popup-content {
+.aviso-content {
     background: #0f172a;
     border: 1px solid #34d399;
     border-radius: 12px;
@@ -1018,11 +1019,11 @@ p strong { color: #ffffff; }
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.popup-overlay.is-visible .popup-content {
+.aviso-overlay.is-visible .aviso-content {
     transform: translateY(0);
 }
 
-.popup-close {
+.aviso-close {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -1035,11 +1036,11 @@ p strong { color: #ffffff; }
     padding: 0;
 }
 
-.popup-close:hover {
+.aviso-close:hover {
     color: #ffffff;
 }
 
-.popup-address-box {
+.aviso-address-box {
     background: rgba(255, 255, 255, 0.05);
     padding: 15px;
     border-radius: 8px;
@@ -1047,14 +1048,14 @@ p strong { color: #ffffff; }
     margin-bottom: 25px;
 }
 
-.popup-address-street {
+.aviso-address-street {
     color: #ffffff;
     font-weight: 500;
     margin: 0;
     font-size: 1.1rem;
 }
 
-.popup-address-city {
+.aviso-address-city {
     color: #34d399;
     margin: 5px 0 0 0;
     font-family: 'Orbitron', sans-serif;
