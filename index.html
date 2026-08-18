@@ -353,10 +353,12 @@
         </div>
     </div>
 
-    <!-- INÍCIO: Popup Nova Unidade Juvevê -->
-    <div id="popup-nova-unidade" class="modal-overlay" aria-hidden="true" role="dialog">
-        <div class="modal-wrapper" style="text-align: center; max-width: 450px;">
-            <button type="button" class="modal-close" id="close-popup-unidade" aria-label="Fechar aviso">&times;</button>
+    <!-- ========================================== -->
+    <!-- POPUP NOVA UNIDADE JUVEVÊ                  -->
+    <!-- ========================================== -->
+    <div id="popup-juveve" class="popup-overlay" aria-hidden="true" role="dialog">
+        <div class="popup-content">
+            <button type="button" class="popup-close" id="fechar-popup-juveve" aria-label="Fechar aviso">&times;</button>
             
             <span class="badge-gold" style="display: inline-block; margin-bottom: 15px;">Novidade • Em Breve</span>
             
@@ -368,15 +370,14 @@
                 Estamos expandindo para ficar ainda mais perto de você! Em breve, nosso laboratório de alta precisão terá uma nova casa.
             </p>
             
-            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(52, 211, 153, 0.3); margin-bottom: 25px;">
-                <p style="color: #ffffff; font-weight: 500; margin: 0; font-size: 1.1rem;">Av. João Gualberto, 1802</p>
-                <p style="color: #34d399; margin: 5px 0 0 0; font-family: 'Orbitron', sans-serif; font-size: 0.9rem;">Juvevê - Curitiba / PR</p>
+            <div class="popup-address-box">
+                <p class="popup-address-street">Av. João Gualberto, 1802</p>
+                <p class="popup-address-city">Juvevê - Curitiba / PR</p>
             </div>
             
             <button type="button" class="cta-button" id="btn-ok-popup" style="width: 100%;">Entendi, que ótimo!</button>
         </div>
     </div>
-    <!-- FIM: Popup Nova Unidade Juvevê -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>

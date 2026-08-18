@@ -445,40 +445,47 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function initPopupJuveve() {
-        const popupUnidade = document.getElementById('popup-nova-unidade');
-        const closeBtn = document.getElementById('close-popup-unidade');
-        const okBtn = document.getElementById('btn-ok-popup');
+    preloadImages();
+});
 
-        if (!popupUnidade) return;
+// ==========================================
+// LÓGICA DO POPUP JUVEVÊ (Isolado)
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    const popupJuveve = document.getElementById('popup-juveve');
+    if (!popupJuveve) return;
 
-        const jaViuPopup = false; 
+    const btnClose = document.getElementById('fechar-popup-juveve');
+    const btnOk = document.getElementById('btn-ok-popup');
+    
+    // Para testar infinitamente, mantenha false.
+    const jaViuPopup = false; 
+    
+    // NOTA PARA PRODUÇÃO: Quando for lançar o site oficial, 
+    // apague a linha acima e use a linha abaixo para o cliente ver só uma vez:
+    // const jaViuPopup = localStorage.getItem('popupJuveveVisto') === 'true';
 
-        if (!jaViuPopup) {
-            setTimeout(() => {
-                popupUnidade.classList.add('active');
-                popupUnidade.setAttribute('aria-hidden', 'false');
-            }, 1500);
-        }
-
-        function fecharPopup(e) {
-            if(e) e.preventDefault();
-            popupUnidade.classList.remove('active');
-            popupUnidade.setAttribute('aria-hidden', 'true');
-            // localStorage.setItem('popupJuveveVisto', 'true');
-        }
-
-        if (closeBtn) closeBtn.addEventListener('click', fecharPopup);
-        if (okBtn) okBtn.addEventListener('click', fecharPopup);
-        
-        popupUnidade.addEventListener('click', function(e) {
-            if (e.target === popupUnidade) {
-                fecharPopup();
-            }
-        });
+    if (!jaViuPopup) {
+        setTimeout(() => {
+            popupJuveve.classList.add('is-visible');
+            popupJuveve.setAttribute('aria-hidden', 'false');
+        }, 1500); // Aparece suavemente 1.5s após abrir o site
     }
 
-    initPopupJuveve();
+    function fecharPopup() {
+        popupJuveve.classList.remove('is-visible');
+        popupJuveve.setAttribute('aria-hidden', 'true');
+        
+        // NOTA PARA PRODUÇÃO: Descomente a linha abaixo para gravar na memória do navegador
+        // localStorage.setItem('popupJuveveVisto', 'true');
+    }
 
-    preloadImages();
+    // Ações de clique
+    if (btnClose) btnClose.addEventListener('click', fecharPopup);
+    if (btnOk) btnOk.addEventListener('click', fecharPopup);
+
+    // Fechar ao clicar fora (no overlay escuro)
+    popupJuveve.addEventListener('click', (e) => {
+        if (e.target === popupJuveve) fecharPopup();
+    });
 });
