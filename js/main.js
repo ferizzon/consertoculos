@@ -186,7 +186,8 @@ window.addEventListener('DOMContentLoaded', () => {
         initFormSubmit();
         initMobileMenu(); 
         initAnchorLinks(); 
-        initContactModal(); 
+        initContactModal();
+        initPopupJuveve(); 
     }
 
     function initTextAnimations() {
@@ -441,6 +442,46 @@ window.addEventListener('DOMContentLoaded', () => {
             if (e.target === modal) {
                 modal.classList.remove('active');
                 modal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
+    function initPopupJuveve() {
+        const popupUnidade = document.getElementById('popup-nova-unidade');
+        const closeBtn = document.getElementById('close-popup-unidade');
+        const okBtn = document.getElementById('btn-ok-popup');
+
+        if (!popupUnidade) return; // Segurança caso o HTML não seja encontrado
+
+        // Para testes, deixe como false. 
+        // Para lançar o site oficialmente, troque para: localStorage.getItem('popupJuveveVisto')
+        const jaViuPopup = false; 
+
+        if (!jaViuPopup) {
+            // Abre o popup após 1.5 segundos
+            setTimeout(() => {
+                popupUnidade.classList.add('active');
+                popupUnidade.setAttribute('aria-hidden', 'false');
+            }, 1500);
+        }
+
+        function fecharPopup(e) {
+            if(e) e.preventDefault();
+            popupUnidade.classList.remove('active');
+            popupUnidade.setAttribute('aria-hidden', 'true');
+            
+            // Para o site oficial, descomente a linha abaixo para gravar na memória do navegador
+            // localStorage.setItem('popupJuveveVisto', 'true');
+        }
+
+        // Eventos para fechar (Botão X e Botão Entendi)
+        if (closeBtn) closeBtn.addEventListener('click', fecharPopup);
+        if (okBtn) okBtn.addEventListener('click', fecharPopup);
+        
+        // Fechar ao clicar fora (no fundo escuro)
+        popupUnidade.addEventListener('click', function(e) {
+            if (e.target === popupUnidade) {
+                fecharPopup();
             }
         });
     }
